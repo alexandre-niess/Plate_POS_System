@@ -1,15 +1,14 @@
-import * as React from "react";
+import React from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "../components/Header";
 import CardProduto from "../components/CardProduto";
-import { useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export function Home() {
-  useEffect(() => {
-    document.title = "Alexandre Niess";
-  }, []);
+  const [categoriaVisivel, setCategoriaVisivel] = useState("");
+  const categoriasRefs = useRef({});
 
   // Array de sessões
   const categorias = [
@@ -85,13 +84,65 @@ export function Home() {
     },
   ];
 
+  useEffect(() => {
+    document.title = "Alexandre Niess";
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setCategoriaVisivel(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -80% 0px" } // Ajuste o valor conforme necessário
+    );
+
+    categorias.forEach((categoria) => {
+      if (categoriasRefs.current[categoria]) {
+        observer.observe(categoriasRefs.current[categoria]);
+      }
+    });
+
+    return () => {
+      categorias.forEach((categoria) => {
+        if (categoriasRefs.current[categoria]) {
+          observer.unobserve(categoriasRefs.current[categoria]);
+        }
+      });
+    };
+  }, [categorias]);
+
   return (
     <>
       <CssBaseline />
       <Header />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "64px", // Adicionando margem superior para evitar sobreposição
+          padding: 1,
+          width: "100%",
+          backgroundColor: "#f5f5f5",
+        }}
+      >
+        <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
+          Aberto até as 22h - Pedido min. R$20,00
+        </Typography>
+        <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
+          Ver perfil da loja
+        </Typography>
+      </Box>
       <Box>
         <Box
           sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1000,
+            backgroundColor: "white",
             display: "flex",
             flexDirection: "row",
             overflowX: "auto",
@@ -112,7 +163,18 @@ export function Home() {
                 marginRight: 3,
               }}
             >
-              <Typography variant="h6" component="h2">
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{
+                  fontWeight:
+                    categoriaVisivel === categoria ? "bold" : "normal",
+                  color:
+                    categoriaVisivel === categoria
+                      ? "primary.main"
+                      : "text.primary",
+                }}
+              >
                 {categoria}
               </Typography>
             </Box>
@@ -126,7 +188,12 @@ export function Home() {
         }}
       >
         {categorias.map((categoria) => (
-          <Box key={categoria} sx={{ marginBottom: 4 }}>
+          <Box
+            key={categoria}
+            id={categoria}
+            ref={(el) => (categoriasRefs.current[categoria] = el)}
+            sx={{ marginBottom: 4 }}
+          >
             <Typography variant="h5" component="h3">
               {categoria}
             </Typography>

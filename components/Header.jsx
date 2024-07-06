@@ -35,25 +35,6 @@ function Header() {
           </IconButton>
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "64px", // Adicionando margem superior para evitar sobreposição
-          padding: 1,
-          width: "100%",
-          backgroundColor: "#f5f5f5",
-        }}
-      >
-        <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
-          Aberto até as 22h - Pedido min. R$20,00
-        </Typography>
-        <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
-          Ver perfil da loja
-        </Typography>
-      </Box>
     </>
   );
 }

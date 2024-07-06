@@ -1,4 +1,5 @@
 import { createTheme, ThemeProvider, Typography } from "@mui/material";
+import { Home } from "../screens/Home";
 
 function App() {
   const temaRest = createTheme({
@@ -24,7 +25,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={temaRest}>
-        <Typography variant="h1">Hello, world!</Typography>
+        <Home />
       </ThemeProvider>
     </>
   );

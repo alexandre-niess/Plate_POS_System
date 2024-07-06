@@ -11,28 +11,52 @@ function Header() {
     <>
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          height: 64,
-          padding: 1,
-          backgroundColor: "#443399",
-          width: "100%",
-          position: "fixed",
           top: 0,
-          zIndex: 1,
+          position: "fixed",
+          width: "100%",
         }}
       >
-        <Typography variant="h6" component="h1" align="left">
-          Restaurante Bom Sabor
-        </Typography>
-        <Box>
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-          <IconButton>
-            <ShareIcon />
-          </IconButton>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: 1,
+            height: 20,
+            width: "100%",
+            backgroundColor: "#f5f5f5",
+          }}
+        >
+          <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
+            Aberto até as 22h - Pedido min. R$20,00
+          </Typography>
+          <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
+            Ver perfil da loja
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            height: 64,
+            padding: 1,
+            backgroundColor: "#443399",
+            width: "100%",
+          }}
+        >
+          <Typography variant="h6" component="h1" align="left">
+            Restaurante Bom Sabor
+          </Typography>
+          <Box>
+            <IconButton>
+              <SearchIcon />
+            </IconButton>
+            <IconButton>
+              <ShareIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
     </>

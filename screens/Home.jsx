@@ -9,8 +9,8 @@ import Typography from "@mui/material/Typography";
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
   const categoriasRefs = useRef({});
+  const containerRef = useRef(null);
 
-  // Array de sessões
   const categorias = [
     "Italiana",
     "Americana",
@@ -95,7 +95,7 @@ export function Home() {
           }
         });
       },
-      { rootMargin: "0px 0px -80% 0px" } // Ajuste o valor conforme necessário
+      { rootMargin: "0px 0px -80% 0px" }
     );
 
     categorias.forEach((categoria) => {
@@ -113,78 +113,90 @@ export function Home() {
     };
   }, [categorias]);
 
+  useEffect(() => {
+    if (categoriaVisivel && categoriasRefs.current[categoriaVisivel]) {
+      const categoriaElement = categoriasRefs.current[categoriaVisivel];
+      const containerElement = containerRef.current;
+
+      const categoriaRect = categoriaElement.getBoundingClientRect();
+      const containerRect = containerElement.getBoundingClientRect();
+      const scrollLeft =
+        categoriaElement.offsetLeft -
+        containerRect.width / 4 +
+        categoriaRect.width / 4;
+
+      containerElement.scrollTo({
+        left: scrollLeft,
+        behavior: "smooth",
+      });
+    }
+  }, [categoriaVisivel]);
+
+  const handleCategoriaClick = (categoria) => {
+    if (categoriasRefs.current[categoria]) {
+      const offsetTop = categoriasRefs.current[categoria].offsetTop - 160; // Altura do Header + espaço extra
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <>
       <CssBaseline />
       <Header />
       <Box
+        ref={containerRef}
         sx={{
+          position: "fixed",
+          top: "84px", // altura do Header
+          width: "100%",
+          backgroundColor: "white",
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "64px", // Adicionando margem superior para evitar sobreposição
-          padding: 1,
-          width: "100%",
-          backgroundColor: "#f5f5f5",
+          overflowX: "auto",
+          whiteSpace: "nowrap",
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+          "-ms-overflow-style": "none", // IE and Edge
+          "scrollbar-width": "none", // Firefox
+          zIndex: 1,
         }}
       >
-        <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
-          Aberto até as 22h - Pedido min. R$20,00
-        </Typography>
-        <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
-          Ver perfil da loja
-        </Typography>
-      </Box>
-      <Box>
-        <Box
-          sx={{
-            position: "sticky",
-            top: 0,
-            zIndex: 1000,
-            backgroundColor: "white",
-            display: "flex",
-            flexDirection: "row",
-            overflowX: "auto",
-            whiteSpace: "nowrap",
-            padding: 1,
-            "::-webkit-scrollbar": {
-              display: "none",
-            },
-            "-ms-overflow-style": "none", // IE and Edge
-            "scrollbar-width": "none", // Firefox
-          }}
-        >
-          {categorias.map((categoria) => (
-            <Box
-              key={categoria}
+        {categorias.map((categoria) => (
+          <Box
+            key={categoria}
+            ref={(el) => (categoriasRefs.current[categoria] = el)}
+            onClick={() => handleCategoriaClick(categoria)}
+            sx={{
+              display: "inline-block",
+              marginRight: 3,
+              padding: "16px 8px", // ajuste de padding para melhor visualização
+              cursor: "pointer",
+            }}
+          >
+            <Typography
+              variant="h6"
+              component="h2"
               sx={{
-                display: "inline-block",
-                marginRight: 3,
+                fontWeight: categoriaVisivel === categoria ? "bold" : "normal",
+                color:
+                  categoriaVisivel === categoria
+                    ? "primary.main"
+                    : "text.primary",
               }}
             >
-              <Typography
-                variant="h6"
-                component="h2"
-                sx={{
-                  fontWeight:
-                    categoriaVisivel === categoria ? "bold" : "normal",
-                  color:
-                    categoriaVisivel === categoria
-                      ? "primary.main"
-                      : "text.primary",
-                }}
-              >
-                {categoria}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
+              {categoria}
+            </Typography>
+          </Box>
+        ))}
       </Box>
 
       <Box
         sx={{
-          padding: 2,
+          padding: "160px 16px 16px 16px", // Ajuste conforme necessário
         }}
       >
         {categorias.map((categoria) => (

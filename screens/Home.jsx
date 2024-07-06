@@ -12,14 +12,77 @@ export function Home() {
   }, []);
 
   // Array de sessões
-  const sections = [
-    "Novidades",
-    "Promoções",
-    "Combos",
-    "Almoço",
-    "Jantar",
-    "Sobremesas",
-    "Bebidas",
+  const categorias = [
+    "Italiana",
+    "Americana",
+    "Japonesa",
+    "Saladas",
+    "Mexicana",
+    "Brasileira",
+    "Carnes",
+  ];
+
+  const pratos = [
+    {
+      nome: "Pizza Margherita",
+      descricao: "Deliciosa pizza com queijo e manjericão.",
+      preco: "30,00",
+      categoria: "Italiana",
+    },
+    {
+      nome: "Hambúrguer Artesanal",
+      descricao: "Hambúrguer com carne de qualidade e molhos especiais.",
+      preco: "25,00",
+      categoria: "Americana",
+    },
+    {
+      nome: "Sushi Combo",
+      descricao: "Combo com 20 peças de sushi fresquinho.",
+      preco: "45,00",
+      categoria: "Japonesa",
+    },
+    {
+      nome: "Spaghetti Carbonara",
+      descricao: "Spaghetti com molho carbonara autêntico.",
+      preco: "35,00",
+      categoria: "Italiana",
+    },
+    {
+      nome: "Salada Caesar",
+      descricao: "Salada Caesar com frango grelhado e molho especial.",
+      preco: "20,00",
+      categoria: "Saladas",
+    },
+    {
+      nome: "Tacos Mexicanos",
+      descricao: "Tacos autênticos com carne e guacamole.",
+      preco: "28,00",
+      categoria: "Mexicana",
+    },
+    {
+      nome: "Frango à Parmegiana",
+      descricao: "Frango empanado com molho de tomate e queijo.",
+      preco: "32,00",
+      categoria: "Brasileira",
+    },
+    {
+      nome: "Lasanha Bolonhesa",
+      descricao: "Lasanha com molho bolonhesa e muito queijo.",
+      preco: "38,00",
+      categoria: "Italiana",
+    },
+    {
+      nome: "Risoto de Camarão",
+      descricao: "Risoto cremoso com camarões frescos.",
+      preco: "42,00",
+      categoria: "Italiana",
+    },
+    {
+      nome: "Bife Ancho",
+      descricao: "Bife ancho grelhado no ponto perfeito.",
+      preco: "50,00",
+      categoria: "Carnes",
+    },
   ];
 
   return (
@@ -41,22 +104,55 @@ export function Home() {
             "scrollbar-width": "none", // Firefox
           }}
         >
-          {sections.map((section) => (
+          {categorias.map((categoria) => (
             <Box
-              key={section}
+              key={categoria}
               sx={{
                 display: "inline-block",
                 marginRight: 3,
               }}
             >
               <Typography variant="h6" component="h2">
-                {section}
+                {categoria}
               </Typography>
             </Box>
           ))}
         </Box>
       </Box>
-      <CardProduto />
+
+      <Box
+        sx={{
+          padding: 2,
+        }}
+      >
+        {categorias.map((categoria) => (
+          <Box key={categoria} sx={{ marginBottom: 4 }}>
+            <Typography variant="h5" component="h3">
+              {categoria}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                marginTop: 2,
+              }}
+            >
+              {pratos
+                .filter((prato) => prato.categoria === categoria)
+                .map((prato, index) => (
+                  <CardProduto
+                    key={index}
+                    nome={prato.nome}
+                    descricao={prato.descricao}
+                    preco={prato.preco}
+                    categoria={prato.categoria}
+                  />
+                ))}
+            </Box>
+          </Box>
+        ))}
+      </Box>
     </>
   );
 }

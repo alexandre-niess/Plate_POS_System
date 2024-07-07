@@ -1,6 +1,4 @@
-import React from "react";
-import { useState, useRef } from "react";
-import Header from "../components/Header";
+import React, { useState, useRef, useEffect } from "react";
 import CardProduto from "../components/CardProduto";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -17,6 +15,7 @@ export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
   const categoriasRefs = useRef({});
   const containerRef = useRef(null);
+  const categoriasContainerRef = useRef(null);
 
   const categorias = [
     "Italiana",
@@ -123,9 +122,41 @@ export function Home() {
         top: offsetTop,
         behavior: "smooth",
       });
-      setCategoriaVisivel(categoria); // Set categoriaVisivel to the clicked category
+      setCategoriaVisivel(categoria);
     }
   };
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setCategoriaVisivel(entry.target.id);
+            const categoriaIndex = categorias.findIndex(
+              (cat) => cat === entry.target.id
+            );
+            if (categoriasContainerRef.current) {
+              const categoryElement =
+                categoriasContainerRef.current.children[categoriaIndex];
+              categoryElement.scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+              });
+            }
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    Object.values(categoriasRefs.current).forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [categorias]);
 
   return (
     <>
@@ -192,7 +223,7 @@ export function Home() {
         </Box>
       </Box>
       <Box
-        ref={containerRef}
+        ref={categoriasContainerRef}
         sx={{
           position: "fixed",
           top: "104px", // altura do Header
@@ -210,7 +241,7 @@ export function Home() {
           "scrollbar-width": "none", // Firefox
         }}
       >
-        {categorias.map((categoria) => (
+        {categorias.map((categoria, index) => (
           <Box
             key={categoria}
             ref={(el) => (categoriasRefs.current[categoria] = el)}

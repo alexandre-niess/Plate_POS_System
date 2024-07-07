@@ -8,7 +8,7 @@ function CardProduto({ nome, descricao, preco, categoria }) {
     <Card
       sx={{
         padding: 1,
-        backgroundColor: "#f5f5f5",
+        backgroundColor: "background.secondary",
         maxHeight: "auto",
         width: "100%",
         display: "flex",

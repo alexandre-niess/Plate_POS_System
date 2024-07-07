@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Header from "../components/Header";
 import CardProduto from "../components/CardProduto";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,6 +8,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import ShareIcon from "@mui/icons-material/Share";
+import Divider from "@mui/material/Divider";
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
@@ -126,14 +130,75 @@ export function Home() {
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Box
+        sx={{
+          top: 0,
+          position: "fixed",
+          width: "100%",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            position: "relative",
+            padding: 1,
+            height: 40,
+            width: "100%",
+            zIndex: 100,
+            backgroundColor: "background.secondary",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Adiciona sombra
+          }}
+        >
+          <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
+            Aberto até as 22h - Pedido min. R$20,00
+          </Typography>
+          <Link to="perfil-da-loja" style={{ color: "inherit" }}>
+            <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
+              Ver perfil da loja
+            </Typography>
+          </Link>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            position: "relative",
+            justifyContent: "space-between",
+            alignItems: "center",
+            height: 64,
+            padding: 1,
+            backgroundColor: "primary.main",
+            width: "100%",
+          }}
+        >
+          <Typography
+            variant="h6"
+            component="h1"
+            align="left"
+            color="text.secondary"
+          >
+            Restaurante Bom Sabor
+          </Typography>
+          <Box>
+            <IconButton>
+              <SearchIcon />
+            </IconButton>
+            <IconButton>
+              <ShareIcon />
+            </IconButton>
+          </Box>
+        </Box>
+      </Box>
       <Box
         ref={containerRef}
         sx={{
           position: "fixed",
-          top: "84px", // altura do Header
+          top: "104px", // altura do Header
           width: "100%",
-          backgroundColor: "white",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Adiciona sombra
+          backgroundColor: "background.secondary",
           display: "flex",
           flexDirection: "row",
           overflowX: "auto",
@@ -143,7 +208,6 @@ export function Home() {
           },
           "-ms-overflow-style": "none", // IE and Edge
           "scrollbar-width": "none", // Firefox
-          zIndex: 1,
         }}
       >
         {categorias.map((categoria) => (
@@ -154,19 +218,20 @@ export function Home() {
             sx={{
               display: "inline-block",
               marginRight: 3,
-              padding: "16px 8px", // ajuste de padding para melhor visualização
+              gap: "10px",
               cursor: "pointer",
+              padding: 1,
             }}
           >
             <Typography
-              variant="h6"
-              component="h2"
+              component="h1"
               sx={{
-                fontWeight: categoriaVisivel === categoria ? "bold" : "normal",
+                fontWeight: categoriaVisivel === categoria ? "500" : "normal",
                 color:
                   categoriaVisivel === categoria
                     ? "primary.main"
                     : "text.primary",
+                fontSize: "14px",
               }}
             >
               {categoria}
@@ -177,7 +242,7 @@ export function Home() {
 
       <Container
         sx={{
-          paddingTop: "160px", // Ajuste conforme necessário
+          paddingTop: "180px", // Ajuste conforme necessário
           paddingBottom: "16px",
         }}
       >
@@ -191,7 +256,8 @@ export function Home() {
             <Typography variant="h5" component="h3">
               {categoria}
             </Typography>
-            <Grid container spacing={2} sx={{ marginTop: 2 }}>
+            <Divider sx={{ marginTop: "10px" }} />
+            <Grid container spacing={2} sx={{ marginTop: "1px" }}>
               {pratos
                 .filter((prato) => prato.categoria === categoria)
                 .map((prato, index) => (

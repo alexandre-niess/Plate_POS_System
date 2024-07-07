@@ -1,5 +1,6 @@
 import { createTheme, ThemeProvider, Typography } from "@mui/material";
 import { Home } from "../screens/Home";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const temaRest = createTheme({
@@ -25,7 +26,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={temaRest}>
-        <Home />
+        <Outlet />
       </ThemeProvider>
     </>
   );

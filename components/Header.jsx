@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ShareIcon from "@mui/icons-material/Share";
+import { Link } from "react-browser-router";
 
 function Header() {
   return (
@@ -31,9 +32,14 @@ function Header() {
           <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
             Aberto até as 22h - Pedido min. R$20,00
           </Typography>
-          <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
-            Ver perfil da loja
-          </Typography>
+          <Link
+            to="perfil-da-loja"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
+              Ver perfil da loja
+            </Typography>
+          </Link>
         </Box>
         <Box
           sx={{

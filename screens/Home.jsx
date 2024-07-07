@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");

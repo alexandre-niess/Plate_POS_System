@@ -5,6 +5,8 @@ import CardProduto from "../components/CardProduto";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
@@ -19,6 +21,7 @@ export function Home() {
     "Mexicana",
     "Brasileira",
     "Carnes",
+    "Bebidas",
   ];
 
   const pratos = [
@@ -82,55 +85,31 @@ export function Home() {
       preco: "50,00",
       categoria: "Carnes",
     },
+    {
+      nome: "Coca-Cola Lata",
+      descricao: "Coca-Cola gelada em lata 350ml.",
+      preco: "5,00",
+      categoria: "Bebidas",
+    },
+    {
+      nome: "Guaraná Antarctica",
+      descricao: "Guaraná Antarctica gelado 350ml.",
+      preco: "5,00",
+      categoria: "Bebidas",
+    },
+    {
+      nome: "Água Mineral",
+      descricao: "Água mineral sem gás 500ml.",
+      preco: "3,00",
+      categoria: "Bebidas",
+    },
+    {
+      nome: "Fanta Laranja",
+      descricao: "Água mineral sem gás 500ml.",
+      preco: "5,00",
+      categoria: "Bebidas",
+    },
   ];
-
-  useEffect(() => {
-    document.title = "Alexandre Niess";
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setCategoriaVisivel(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -80% 0px" }
-    );
-
-    categorias.forEach((categoria) => {
-      if (categoriasRefs.current[categoria]) {
-        observer.observe(categoriasRefs.current[categoria]);
-      }
-    });
-
-    return () => {
-      categorias.forEach((categoria) => {
-        if (categoriasRefs.current[categoria]) {
-          observer.unobserve(categoriasRefs.current[categoria]);
-        }
-      });
-    };
-  }, [categorias]);
-
-  useEffect(() => {
-    if (categoriaVisivel && categoriasRefs.current[categoriaVisivel]) {
-      const categoriaElement = categoriasRefs.current[categoriaVisivel];
-      const containerElement = containerRef.current;
-
-      const categoriaRect = categoriaElement.getBoundingClientRect();
-      const containerRect = containerElement.getBoundingClientRect();
-      const scrollLeft =
-        categoriaElement.offsetLeft -
-        containerRect.width / 4 +
-        categoriaRect.width / 4;
-
-      containerElement.scrollTo({
-        left: scrollLeft,
-        behavior: "smooth",
-      });
-    }
-  }, [categoriaVisivel]);
 
   const handleCategoriaClick = (categoria) => {
     if (categoriasRefs.current[categoria]) {
@@ -139,6 +118,7 @@ export function Home() {
         top: offsetTop,
         behavior: "smooth",
       });
+      setCategoriaVisivel(categoria); // Set categoriaVisivel to the clicked category
     }
   };
 
@@ -194,9 +174,10 @@ export function Home() {
         ))}
       </Box>
 
-      <Box
+      <Container
         sx={{
-          padding: "160px 16px 16px 16px", // Ajuste conforme necessário
+          paddingTop: "160px", // Ajuste conforme necessário
+          paddingBottom: "16px",
         }}
       >
         {categorias.map((categoria) => (
@@ -209,29 +190,23 @@ export function Home() {
             <Typography variant="h5" component="h3">
               {categoria}
             </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-                marginTop: 2,
-              }}
-            >
+            <Grid container spacing={2} sx={{ marginTop: 2 }}>
               {pratos
                 .filter((prato) => prato.categoria === categoria)
                 .map((prato, index) => (
-                  <CardProduto
-                    key={index}
-                    nome={prato.nome}
-                    descricao={prato.descricao}
-                    preco={prato.preco}
-                    categoria={prato.categoria}
-                  />
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                    <CardProduto
+                      nome={prato.nome}
+                      descricao={prato.descricao}
+                      preco={prato.preco}
+                      categoria={prato.categoria}
+                    />
+                  </Grid>
                 ))}
-            </Box>
+            </Grid>
           </Box>
         ))}
-      </Box>
+      </Container>
     </>
   );
 }

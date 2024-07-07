@@ -14,7 +14,6 @@ import Divider from "@mui/material/Divider";
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
   const categoriasRefs = useRef({});
-  const containerRef = useRef(null);
   const categoriasContainerRef = useRef(null);
 
   const categorias = [
@@ -123,6 +122,25 @@ export function Home() {
         behavior: "smooth",
       });
       setCategoriaVisivel(categoria);
+      centralizarCategoria(categoria);
+    }
+  };
+
+  const centralizarCategoria = (categoria) => {
+    const categoriaIndex = categorias.findIndex((cat) => cat === categoria);
+    if (categoriasContainerRef.current) {
+      const categoryElement =
+        categoriasContainerRef.current.children[categoriaIndex];
+      const containerWidth = categoriasContainerRef.current.offsetWidth;
+      const categoryElementWidth = categoryElement.offsetWidth;
+      const scrollLeft =
+        categoryElement.offsetLeft -
+        containerWidth / 2 +
+        categoryElementWidth / 2;
+      categoriasContainerRef.current.scrollTo({
+        left: scrollLeft,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -131,22 +149,17 @@ export function Home() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setCategoriaVisivel(entry.target.id);
-            const categoriaIndex = categorias.findIndex(
-              (cat) => cat === entry.target.id
-            );
-            if (categoriasContainerRef.current) {
-              const categoryElement =
-                categoriasContainerRef.current.children[categoriaIndex];
-              categoryElement.scrollIntoView({
-                behavior: "smooth",
-                inline: "center",
-              });
-            }
+            const categoria = entry.target.id;
+            setCategoriaVisivel(categoria);
+            centralizarCategoria(categoria);
           }
         });
       },
-      { threshold: 0.5 }
+      {
+        root: null,
+        rootMargin: "0px 0px -75% 0px", // Ajusta a margem inferior para que a área de observação esteja na posição desejada
+        threshold: 0.1, // Ajusta o threshold conforme necessário
+      }
     );
 
     Object.values(categoriasRefs.current).forEach((ref) => {

@@ -8,12 +8,15 @@ import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
-import { Avatar } from "@mui/material";
+import { Avatar, TextField, InputAdornment, Grow } from "@mui/material";
 import Footer from "../components/Footer";
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
+  const [searchMode, setSearchMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const categoriasRefs = useRef({});
   const categoriasContainerRef = useRef(null);
 
@@ -35,7 +38,7 @@ export function Home() {
       preco: "30,00",
       categoria: "Italiana",
       imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
+      alergenicos: "Glúten,Lactose",
     },
     {
       nome: "Hambúrguer Artesanal",
@@ -208,6 +211,26 @@ export function Home() {
     };
   }, [categorias]);
 
+  const handleSearchIconClick = () => {
+    setSearchMode(true);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchClose = () => {
+    setSearchMode(false);
+    setSearchQuery("");
+  };
+
+  const filteredPratos = searchQuery
+    ? pratos.filter((prato) =>
+      prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    : pratos;
+
   return (
     <>
       <CssBaseline />
@@ -253,27 +276,59 @@ export function Home() {
             width: "100%",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "10px",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Avatar
-              src="../public/logo.png"
-              alt="Logo do restaurante"
-              sx={{ width: 30, height: 30 }}
+          <Grow in={searchMode}>
+            <TextField
+              variant="outlined"
+              placeholder="Buscar..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              sx={{
+                width: "100%",
+                backgroundColor: "white",
+                '& .MuiOutlinedInput-root': {
+                  height: '40px', // Ajuste a altura conforme necessário
+                },
+                borderRadius: 1,
+              }}
+              InputProps={{
+                style: {
+                  height: '40px', // Ajuste a altura conforme necessário
+                },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleSearchClose}>
+                      <CloseIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-            <Typography component="h1" align="left" color="text.secondary">
-              Restaurante Bom Sabor
-            </Typography>
-          </Box>
-          <IconButton>
-            <SearchIcon sx={{ color: "text.secondary" }} />
-          </IconButton>
+          </Grow>
+          {!searchMode && (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "10px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Avatar
+                  src="../public/logo.png"
+                  alt="Logo do restaurante"
+                  sx={{ width: 30, height: 30 }}
+                />
+                <Typography component="h1" align="left" color="text.secondary">
+                  Restaurante Bom Sabor
+                </Typography>
+              </Box>
+              <IconButton onClick={handleSearchIconClick}>
+                <SearchIcon sx={{ color: "text.secondary" }} />
+              </IconButton>
+            </>
+          )}
         </Box>
       </Box>
       <Box
@@ -343,7 +398,7 @@ export function Home() {
             </Typography>
             <Divider sx={{ marginTop: "10px" }} />
             <Grid container spacing={2} sx={{ marginTop: "1px" }}>
-              {pratos
+              {filteredPratos
                 .filter((prato) => prato.categoria === categoria)
                 .map((prato, index) => (
                   <Grid item xs={12} sm={6} md={4} key={index}>

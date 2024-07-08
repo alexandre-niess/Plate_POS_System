@@ -46,9 +46,9 @@ export function PerfilEmp() {
           }}
         >
           <Avatar
-            src="https://source.unsplash.com/100x100/?restaurant"
+            src="../public/logo.png"
             alt="Logo do restaurante"
-            sx={{ width: 50, height: 50 }} // Ajuste o tamanho conforme necessário
+            sx={{ width: 50, height: 50 }}
           />
           <Typography
             component="h1"

@@ -8,9 +8,9 @@ import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import ShareIcon from "@mui/icons-material/Share";
 import Divider from "@mui/material/Divider";
 import { Avatar } from "@mui/material";
+import Footer from "../components/Footer";
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
@@ -227,9 +227,9 @@ export function Home() {
             }}
           >
             <Avatar
-              src="https://source.unsplash.com/100x100/?restaurant"
+              src="../public/logo.png"
               alt="Logo do restaurante"
-              sx={{ width: 30, height: 30 }} // Ajuste o tamanho conforme necessário
+              sx={{ width: 30, height: 30 }}
             />
             <Typography component="h1" align="left" color="text.secondary">
               Restaurante Bom Sabor
@@ -244,9 +244,9 @@ export function Home() {
         ref={categoriasContainerRef}
         sx={{
           position: "fixed",
-          top: "84px", // altura do Header
+          top: "84px",
           width: "100%",
-          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Adiciona sombra
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           backgroundColor: "background.secondary",
           display: "flex",
           flexDirection: "row",
@@ -255,8 +255,8 @@ export function Home() {
           "::-webkit-scrollbar": {
             display: "none",
           },
-          "-ms-overflow-style": "none", // IE and Edge
-          "scrollbar-width": "none", // Firefox
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none",
         }}
       >
         {categorias.map((categoria, index) => (
@@ -291,7 +291,7 @@ export function Home() {
 
       <Container
         sx={{
-          paddingTop: "180px", // Ajuste conforme necessário
+          paddingTop: "180px",
           paddingBottom: "16px",
         }}
       >
@@ -323,6 +323,7 @@ export function Home() {
           </Box>
         ))}
       </Container>
+      <Footer />
     </>
   );
 }

@@ -26,7 +26,7 @@ function Header() {
             padding: 1,
             backgroundColor: "primary.main",
             width: "100%",
-            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Adiciona sombra
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           }}
         >
           <Link to="/AppRestaurante">

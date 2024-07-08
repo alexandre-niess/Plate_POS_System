@@ -6,16 +6,19 @@ function App() {
   const temaRest = createTheme({
     palette: {
       primary: {
-        main: "#F32B10", // master orange
+        main: "#F32B10",
       },
       background: {
-        default: "#fff", // Cor de fundo padrão
-        secondary: "#f5f5f5", //cor de fundo secundária
+        default: "#fff",
+        secondary: "#f5f5f5",
       },
       text: {
-        primary: "#333333", // Cor principal do texto
-        secondary: "#fff", // Cor secundária do texto
-        details: "#8C8C8C", // Cor de detalhes do texto
+        primary: "#333333",
+        secondary: "#fff",
+        details: "#8C8C8C",
+      },
+      decorations: {
+        divider: "#DCDCDC",
       },
     },
     shape: {

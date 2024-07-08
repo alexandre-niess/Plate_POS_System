@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 
-const alergenicos = [
+const alergenicosGlobais = [
   {
     nome: "Açúcar",
     imagem: "../public/acucar.png",
@@ -34,10 +34,15 @@ function CardProduto({
   nome,
   descricao,
   preco,
-  categoria,
   imagemPrato,
   alergenicos,
 }) {
+
+  const alergenicosArray = alergenicos.split(",").map(alergenico => alergenico.trim());
+  const alergenicosFiltrados = alergenicosGlobais.filter(alergenico =>
+    alergenicosArray.includes(alergenico.nome)
+  );
+
   return (
     <Card
       sx={{
@@ -80,31 +85,25 @@ function CardProduto({
         }}
       >
         <img
-          src="../public/imagemprato.png"
+          src={imagemPrato}
           alt="Imagem do prato"
           style={{ width: "120px", height: "70px", borderRadius: "8px" }}
         />
-        <Box sx={{
-          display: "flex",
-          gap: "5px",
-          marginTop: "5px",
-
-        }}>
-          <img
-            src="../public/acucar.png"
-            alt="Imagem do prato"
-            style={{ width: "30px", height: "30px" }}
-          />
-          <img
-            src="../public/acucar.png"
-            alt="Imagem do prato"
-            style={{ width: "30px", height: "30px" }}
-          />
-          <img
-            src="../public/vegetariano.png"
-            alt="Imagem do prato"
-            style={{ width: "30px", height: "30px" }}
-          />
+        <Box
+          sx={{
+            display: "flex",
+            gap: "5px",
+            marginTop: "5px",
+          }}
+        >
+          {alergenicosFiltrados.map((alergenico, index) => (
+            <img
+              key={index}
+              src={alergenico.imagem}
+              alt={alergenico.nome}
+              style={{ width: "30px", height: "30px" }}
+            />
+          ))}
         </Box>
       </Box>
     </Card>

@@ -34,90 +34,120 @@ export function Home() {
       descricao: "Deliciosa pizza com queijo e manjericão.",
       preco: "30,00",
       categoria: "Italiana",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Hambúrguer Artesanal",
       descricao: "Hambúrguer com carne de qualidade e molhos especiais.",
       preco: "25,00",
       categoria: "Americana",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Sushi Combo",
       descricao: "Combo com 20 peças de sushi fresquinho.",
       preco: "45,00",
       categoria: "Japonesa",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Poke",
       descricao: "Combo com 20 peças de sushi fresquinho.",
       preco: "45,00",
       categoria: "Japonesa",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Spaghetti Carbonara",
       descricao: "Spaghetti com molho carbonara autêntico.",
       preco: "35,00",
       categoria: "Italiana",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Salada Caesar",
       descricao: "Salada Caesar com frango grelhado e molho especial.",
       preco: "20,00",
       categoria: "Saladas",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Tacos Mexicanos",
       descricao: "Tacos autênticos com carne e guacamole.",
       preco: "28,00",
       categoria: "Mexicana",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Frango à Parmegiana",
       descricao: "Frango empanado com molho de tomate e queijo.",
       preco: "32,00",
       categoria: "Brasileira",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Lasanha Bolonhesa",
       descricao: "Lasanha com molho bolonhesa e muito queijo.",
       preco: "38,00",
       categoria: "Italiana",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Risoto de Camarão",
       descricao: "Risoto cremoso com camarões frescos.",
       preco: "42,00",
       categoria: "Italiana",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Bife Ancho",
       descricao: "Bife ancho grelhado no ponto perfeito.",
       preco: "50,00",
       categoria: "Carnes",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Coca-Cola Lata",
       descricao: "Coca-Cola gelada em lata 350ml.",
       preco: "5,00",
       categoria: "Bebidas",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Guaraná Antarctica",
       descricao: "Guaraná Antarctica gelado 350ml.",
       preco: "5,00",
       categoria: "Bebidas",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Água Mineral",
       descricao: "Água mineral sem gás 500ml.",
       preco: "3,00",
       categoria: "Bebidas",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
     {
       nome: "Fanta Laranja",
       descricao: "Água mineral sem gás 500ml.",
       preco: "5,00",
       categoria: "Bebidas",
+      imagemPrato: "../public/imagemprato.png",
+      alergenicos: "Glúten,Lactose,Vegetariano",
     },
   ];
 
@@ -321,7 +351,8 @@ export function Home() {
                       nome={prato.nome}
                       descricao={prato.descricao}
                       preco={prato.preco}
-                      categoria={prato.categoria}
+                      imagemPrato={prato.imagemPrato}
+                      alergenicos={prato.alergenicos}
                     />
                   </Grid>
                 ))}

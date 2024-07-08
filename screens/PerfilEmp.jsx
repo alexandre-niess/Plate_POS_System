@@ -52,7 +52,7 @@ export function PerfilEmp() {
           />
           <Typography
             component="h1"
-            variant="h5"
+            variant="h6"
             align="left"
             color="text.primary"
           >
@@ -60,7 +60,7 @@ export function PerfilEmp() {
           </Typography>
         </Box>
         <Section title="Endereço">
-          <Typography component="h1" align="left" color="text.details">
+          <Typography component="h1" color="text.details" sx={{ fontSize: "12px", }}>
             Avenida Dom José Gaspar, 500 - Coração Eucarístico, Belo Horizonte -
             MG, 30535-901
           </Typography>
@@ -74,12 +74,12 @@ export function PerfilEmp() {
                 component="h1"
                 align="left"
                 color="text.primary"
-                sx={{ fontWeight: "600" }}
+                sx={{ fontWeight: "600", fontSize: "12px" }}
               >
                 {method.label}
               </Typography>
               {method.description && (
-                <Typography component="h1" align="left" color="text.details">
+                <Typography component="h1" align="left" color="text.details" sx={{ fontSize: "12px" }}>
                   {method.description}
                 </Typography>
               )}
@@ -94,6 +94,7 @@ export function PerfilEmp() {
               component="h1"
               align="left"
               color="text.details"
+              sx={{ fontSize: "12px" }}
             >
               {hour}
             </Typography>
@@ -114,12 +115,7 @@ function Section({ title, children }) {
           padding: 1.5,
         }}
       >
-        <Typography
-          component="h1"
-          align="left"
-          color="text.primary"
-          sx={{ fontWeight: "600" }}
-        >
+        <Typography component="h1" sx={{ fontSize: "14px" }}>
           {title}
         </Typography>
       </Box>

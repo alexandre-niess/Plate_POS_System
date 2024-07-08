@@ -1,6 +1,5 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { IconButton } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -11,9 +10,11 @@ function Header() {
     <>
       <Box
         sx={{
-          top: 0,
           position: "fixed",
+          top: 0,
+          left: 0,
           width: "100%",
+          zIndex: 1000,
         }}
       >
         <Box
@@ -23,16 +24,22 @@ function Header() {
             alignItems: "center",
             height: 64,
             padding: 1,
-            backgroundColor: "#443399",
+            backgroundColor: "primary.main",
             width: "100%",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Adiciona sombra
           }}
         >
           <Link to="/AppRestaurante">
             <IconButton>
-              <ArrowBackIosIcon />
+              <ArrowBackIosIcon sx={{ color: "text.secondary" }} />
             </IconButton>
           </Link>
-          <Typography variant="h6" component="h1" align="left">
+          <Typography
+            component="h1"
+            align="left"
+            color="text.secondary"
+            sx={{ marginLeft: 1 }}
+          >
             Sobre o estabelecimento
           </Typography>
         </Box>

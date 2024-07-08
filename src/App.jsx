@@ -14,7 +14,8 @@ function App() {
       },
       text: {
         primary: "#333333", // Cor principal do texto
-        secondary: "#701407", // Cor secundária do texto
+        secondary: "#fff", // Cor secundária do texto
+        details: "#8C8C8C", // Cor de detalhes do texto
       },
     },
     shape: {

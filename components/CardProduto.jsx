@@ -3,7 +3,14 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 
-function CardProduto({ nome, descricao, preco, categoria }) {
+function CardProduto({
+  nome,
+  descricao,
+  preco,
+  categoria,
+  imagem,
+  alergenicos,
+}) {
   return (
     <Card
       sx={{

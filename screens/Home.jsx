@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import ShareIcon from "@mui/icons-material/Share";
 import Divider from "@mui/material/Divider";
+import { Avatar } from "@mui/material";
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
@@ -189,7 +190,7 @@ export function Home() {
             alignItems: "center",
             position: "relative",
             padding: 1,
-            height: 40,
+            height: 20,
             width: "100%",
             zIndex: 100,
             backgroundColor: "background.secondary",
@@ -208,7 +209,6 @@ export function Home() {
         <Box
           sx={{
             display: "flex",
-            position: "relative",
             justifyContent: "space-between",
             alignItems: "center",
             height: 64,
@@ -217,29 +217,34 @@ export function Home() {
             width: "100%",
           }}
         >
-          <Typography
-            variant="h6"
-            component="h1"
-            align="left"
-            color="text.secondary"
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "10px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            Restaurante Bom Sabor
-          </Typography>
-          <Box>
-            <IconButton>
-              <SearchIcon />
-            </IconButton>
-            <IconButton>
-              <ShareIcon />
-            </IconButton>
+            <Avatar
+              src="https://source.unsplash.com/100x100/?restaurant"
+              alt="Logo do restaurante"
+              sx={{ width: 30, height: 30 }} // Ajuste o tamanho conforme necessário
+            />
+            <Typography component="h1" align="left" color="text.secondary">
+              Restaurante Bom Sabor
+            </Typography>
           </Box>
+          <IconButton>
+            <SearchIcon sx={{ color: "text.secondary" }} />
+          </IconButton>
         </Box>
       </Box>
       <Box
         ref={categoriasContainerRef}
         sx={{
           position: "fixed",
-          top: "104px", // altura do Header
+          top: "84px", // altura do Header
           width: "100%",
           boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Adiciona sombra
           backgroundColor: "background.secondary",

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import CardProduto from "../components/CardProduto";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -10,8 +11,9 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
-import { Avatar, TextField, InputAdornment, Grow } from "@mui/material";
+import { Avatar, TextField, InputAdornment } from "@mui/material";
 import Footer from "../components/Footer";
+import { categorias, pratos } from "../components/Dados"; // Importa as categorias e pratos
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
@@ -19,140 +21,6 @@ export function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const categoriasRefs = useRef({});
   const categoriasContainerRef = useRef(null);
-
-  const categorias = [
-    "Italiana",
-    "Americana",
-    "Japonesa",
-    "Saladas",
-    "Mexicana",
-    "Brasileira",
-    "Carnes",
-    "Bebidas",
-  ];
-
-  const pratos = [
-    {
-      nome: "Pizza Margherita",
-      descricao: "Deliciosa pizza com queijo e manjericão.",
-      preco: "30,00",
-      categoria: "Italiana",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose",
-    },
-    {
-      nome: "Hambúrguer Artesanal",
-      descricao: "Hambúrguer com carne de qualidade e molhos especiais.",
-      preco: "25,00",
-      categoria: "Americana",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Sushi Combo",
-      descricao: "Combo com 20 peças de sushi fresquinho.",
-      preco: "45,00",
-      categoria: "Japonesa",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Poke",
-      descricao: "Combo com 20 peças de sushi fresquinho.",
-      preco: "45,00",
-      categoria: "Japonesa",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Spaghetti Carbonara",
-      descricao: "Spaghetti com molho carbonara autêntico.",
-      preco: "35,00",
-      categoria: "Italiana",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Salada Caesar",
-      descricao: "Salada Caesar com frango grelhado e molho especial.",
-      preco: "20,00",
-      categoria: "Saladas",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Tacos Mexicanos",
-      descricao: "Tacos autênticos com carne e guacamole.",
-      preco: "28,00",
-      categoria: "Mexicana",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Frango à Parmegiana",
-      descricao: "Frango empanado com molho de tomate e queijo.",
-      preco: "32,00",
-      categoria: "Brasileira",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Lasanha Bolonhesa",
-      descricao: "Lasanha com molho bolonhesa e muito queijo.",
-      preco: "38,00",
-      categoria: "Italiana",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Risoto de Camarão",
-      descricao: "Risoto cremoso com camarões frescos.",
-      preco: "42,00",
-      categoria: "Italiana",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Bife Ancho",
-      descricao: "Bife ancho grelhado no ponto perfeito.",
-      preco: "50,00",
-      categoria: "Carnes",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Coca-Cola Lata",
-      descricao: "Coca-Cola gelada em lata 350ml.",
-      preco: "5,00",
-      categoria: "Bebidas",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Guaraná Antarctica",
-      descricao: "Guaraná Antarctica gelado 350ml.",
-      preco: "5,00",
-      categoria: "Bebidas",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Água Mineral",
-      descricao: "Água mineral sem gás 500ml.",
-      preco: "3,00",
-      categoria: "Bebidas",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-    {
-      nome: "Fanta Laranja",
-      descricao: "Água mineral sem gás 500ml.",
-      preco: "5,00",
-      categoria: "Bebidas",
-      imagemPrato: "../public/imagemprato.png",
-      alergenicos: "Glúten,Lactose,Vegetariano",
-    },
-  ];
 
   const handleCategoriaClick = (categoria) => {
     if (categoriasRefs.current[categoria]) {
@@ -209,7 +77,7 @@ export function Home() {
     return () => {
       observer.disconnect();
     };
-  }, [categorias]);
+  }, [categorias, searchQuery]);
 
   const handleSearchIconClick = () => {
     setSearchMode(true);
@@ -225,10 +93,11 @@ export function Home() {
   };
 
   const filteredPratos = searchQuery
-    ? pratos.filter((prato) =>
-      prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    ? pratos.filter(
+        (prato) =>
+          prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     : pratos;
 
   return (
@@ -276,35 +145,42 @@ export function Home() {
             width: "100%",
           }}
         >
-          <Grow in={searchMode}>
-            <TextField
-              variant="outlined"
-              placeholder="Buscar..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              sx={{
-                width: "100%",
-                backgroundColor: "white",
-                '& .MuiOutlinedInput-root': {
-                  height: '40px', // Ajuste a altura conforme necessário
-                },
-                borderRadius: 1,
-              }}
-              InputProps={{
-                style: {
-                  height: '40px', // Ajuste a altura conforme necessário
-                },
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleSearchClose}>
-                      <CloseIcon />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grow>
-          {!searchMode && (
+          {searchMode ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              style={{ width: "100%" }}
+            >
+              <TextField
+                variant="outlined"
+                placeholder="Buscar..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                sx={{
+                  width: "100%",
+                  backgroundColor: "white",
+                  "& .MuiOutlinedInput-root": {
+                    height: "40px", // Ajuste a altura conforme necessário
+                  },
+                  borderRadius: 1,
+                }}
+                InputProps={{
+                  style: {
+                    height: "40px", // Ajuste a altura conforme necessário
+                  },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleSearchClose}>
+                        <CloseIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </motion.div>
+          ) : (
             <>
               <Box
                 sx={{
@@ -350,34 +226,37 @@ export function Home() {
           "scrollbar-width": "none",
         }}
       >
-        {categorias.map((categoria, index) => (
-          <Box
-            key={categoria}
-            ref={(el) => (categoriasRefs.current[categoria] = el)}
-            onClick={() => handleCategoriaClick(categoria)}
-            sx={{
-              display: "inline-block",
-              marginRight: 3,
-              gap: "10px",
-              cursor: "pointer",
-              padding: 1,
-            }}
-          >
-            <Typography
-              component="h1"
-              sx={{
-                fontWeight: categoriaVisivel === categoria ? "500" : "normal",
-                color:
-                  categoriaVisivel === categoria
-                    ? "primary.main"
-                    : "text.primary",
-                fontSize: "14px",
-              }}
-            >
-              {categoria}
-            </Typography>
-          </Box>
-        ))}
+        {!searchQuery || filteredPratos.length > 0
+          ? categorias.map((categoria, index) => (
+              <Box
+                key={categoria}
+                ref={(el) => (categoriasRefs.current[categoria] = el)}
+                onClick={() => handleCategoriaClick(categoria)}
+                sx={{
+                  display: "inline-block",
+                  marginRight: 3,
+                  gap: "10px",
+                  cursor: "pointer",
+                  padding: 1,
+                }}
+              >
+                <Typography
+                  component="h1"
+                  sx={{
+                    fontWeight:
+                      categoriaVisivel === categoria ? "500" : "normal",
+                    color:
+                      categoriaVisivel === categoria
+                        ? "primary.main"
+                        : "text.primary",
+                    fontSize: "14px",
+                  }}
+                >
+                  {categoria}
+                </Typography>
+              </Box>
+            ))
+          : null}
       </Box>
 
       <Container
@@ -386,34 +265,42 @@ export function Home() {
           paddingBottom: "16px",
         }}
       >
-        {categorias.map((categoria) => (
-          <Box
-            key={categoria}
-            id={categoria}
-            ref={(el) => (categoriasRefs.current[categoria] = el)}
-            sx={{ marginBottom: 4 }}
-          >
-            <Typography variant="h5" component="h3">
-              {categoria}
+        {filteredPratos.length === 0 ? (
+          <Box sx={{ padding: 2, textAlign: "center" }}>
+            <Typography variant="h6" component="p">
+              Nenhum resultado encontrado.
             </Typography>
-            <Divider sx={{ marginTop: "10px" }} />
-            <Grid container spacing={2} sx={{ marginTop: "1px" }}>
-              {filteredPratos
-                .filter((prato) => prato.categoria === categoria)
-                .map((prato, index) => (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                    <CardProduto
-                      nome={prato.nome}
-                      descricao={prato.descricao}
-                      preco={prato.preco}
-                      imagemPrato={prato.imagemPrato}
-                      alergenicos={prato.alergenicos}
-                    />
-                  </Grid>
-                ))}
-            </Grid>
           </Box>
-        ))}
+        ) : (
+          categorias.map((categoria) => (
+            <Box
+              key={categoria}
+              id={categoria}
+              ref={(el) => (categoriasRefs.current[categoria] = el)}
+              sx={{ marginBottom: 4 }}
+            >
+              <Typography variant="h5" component="h3">
+                {categoria}
+              </Typography>
+              <Divider sx={{ marginTop: "10px" }} />
+              <Grid container spacing={2} sx={{ marginTop: "1px" }}>
+                {filteredPratos
+                  .filter((prato) => prato.categoria === categoria)
+                  .map((prato, index) => (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                      <CardProduto
+                        nome={prato.nome}
+                        descricao={prato.descricao}
+                        preco={prato.preco}
+                        imagemPrato={prato.imagemPrato}
+                        alergenicos={prato.alergenicos}
+                      />
+                    </Grid>
+                  ))}
+              </Grid>
+            </Box>
+          ))
+        )}
       </Container>
       <Footer />
     </>

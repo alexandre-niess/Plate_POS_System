@@ -48,6 +48,12 @@ export function Home() {
       categoria: "Japonesa",
     },
     {
+      nome: "Poke",
+      descricao: "Combo com 20 peças de sushi fresquinho.",
+      preco: "45,00",
+      categoria: "Japonesa",
+    },
+    {
       nome: "Spaghetti Carbonara",
       descricao: "Spaghetti com molho carbonara autêntico.",
       preco: "35,00",

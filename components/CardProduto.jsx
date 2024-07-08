@@ -3,12 +3,39 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 
+const alergenicos = [
+  {
+    nome: "Açúcar",
+    imagem: "../public/acucar.png",
+  },
+  {
+    nome: "Glúten",
+    imagem: "../public/gluten.png",
+  },
+  {
+    nome: "Lactose",
+    imagem: "../public/lactose.png",
+  },
+  {
+    nome: "Vegetariano",
+    imagem: "../public/vegetariano.png",
+  },
+  {
+    nome: "Ovo",
+    imagem: "../public/ovo.png",
+  },
+  {
+    nome: "Soja",
+    imagem: "../public/soja.png",
+  },
+];
+
 function CardProduto({
   nome,
   descricao,
   preco,
   categoria,
-  imagem,
+  imagemPrato,
   alergenicos,
 }) {
   return (
@@ -47,6 +74,7 @@ function CardProduto({
       <Box
         sx={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -54,8 +82,30 @@ function CardProduto({
         <img
           src="../public/imagemprato.png"
           alt="Imagem do prato"
-          style={{ width: "100px", height: "auto", borderRadius: "8px" }}
+          style={{ width: "120px", height: "70px", borderRadius: "8px" }}
         />
+        <Box sx={{
+          display: "flex",
+          gap: "5px",
+          marginTop: "5px",
+
+        }}>
+          <img
+            src="../public/acucar.png"
+            alt="Imagem do prato"
+            style={{ width: "30px", height: "30px" }}
+          />
+          <img
+            src="../public/acucar.png"
+            alt="Imagem do prato"
+            style={{ width: "30px", height: "30px" }}
+          />
+          <img
+            src="../public/vegetariano.png"
+            alt="Imagem do prato"
+            style={{ width: "30px", height: "30px" }}
+          />
+        </Box>
       </Box>
     </Card>
   );

@@ -17,7 +17,13 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../src/firebaseConfig";
 
@@ -53,6 +59,7 @@ export function CadPrato() {
   const [categoria, setCategoria] = useState("");
   const [preco, setPreco] = useState("");
   const [imagem, setImagem] = useState(null);
+  const [imagemNome, setImagemNome] = useState(""); // Para armazenar o nome do arquivo de imagem
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [errors, setErrors] = useState({
@@ -73,7 +80,20 @@ export function CadPrato() {
   };
 
   const handleImagemChange = (event) => {
-    setImagem(event.target.files[0]);
+    const file = event.target.files[0];
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+    if (file && allowedTypes.includes(file.type)) {
+      setImagem(file);
+      setImagemNome(file.name); // Armazena o nome do arquivo de imagem
+      setErrors((prev) => ({ ...prev, imagem: false }));
+    } else {
+      setImagem(null);
+      setImagemNome("");
+      setErrors((prev) => ({ ...prev, imagem: true }));
+      alert(
+        "Por favor, selecione um arquivo de imagem válido (jpeg, png, gif)."
+      );
+    }
   };
 
   const validateFields = () => {
@@ -106,15 +126,27 @@ export function CadPrato() {
       await uploadBytes(storageRef, imagem);
       const imagemURL = await getDownloadURL(storageRef);
 
+      // Converte os alergenicos selecionados para uma string separada por vírgulas
+      const alergenicosString = selectedAlergenicos.join(",");
+
       // Adiciona os dados do prato ao Firestore
-      await addDoc(collection(db, "Pratos"), {
+      const docRef = await addDoc(collection(db, "Pratos"), {
         nome,
         descricao,
         categoria,
         preco,
-        alergenicos: selectedAlergenicos,
+        alergenicos: alergenicosString,
         imagemPrato: imagemURL,
       });
+
+      // Obtenha o documento recém-adicionado
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("Documento cadastrado:", docSnap.data());
+      } else {
+        console.log("Nenhum documento encontrado.");
+      }
 
       alert("Prato cadastrado com sucesso!");
       // Reset form state
@@ -124,6 +156,7 @@ export function CadPrato() {
       setPreco("");
       setSelectedAlergenicos([]);
       setImagem(null);
+      setImagemNome("");
     } catch (error) {
       console.error("Erro ao cadastrar o prato: ", error);
       alert("Erro ao cadastrar o prato. Tente novamente.");
@@ -248,15 +281,23 @@ export function CadPrato() {
               component="label"
               fullWidth
               sx={{ mt: 3, mb: 2 }}
-              error={errors.imagem}
-              helperText={errors.imagem ? "Imagem é obrigatória" : ""}
             >
               <Box sx={{ display: "flex", gap: "10px" }}>
                 Upload Imagem
                 <CloudUploadIcon />
               </Box>
-              <input type="file" hidden onChange={handleImagemChange} />
+              <input
+                type="file"
+                hidden
+                onChange={handleImagemChange}
+                accept="image/jpeg,image/png,image/gif"
+              />
             </Button>
+            {imagemNome && (
+              <Typography variant="body2" sx={{ mt: 1 }}>
+                Arquivo selecionado: {imagemNome}
+              </Typography>
+            )}
             {errors.imagem && (
               <Typography color="error" variant="caption">
                 Imagem é obrigatória

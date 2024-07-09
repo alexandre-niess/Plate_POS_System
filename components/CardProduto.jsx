@@ -30,16 +30,13 @@ const alergenicosGlobais = [
   },
 ];
 
-function CardProduto({
-  nome,
-  descricao,
-  preco,
-  imagemPrato,
-  alergenicos,
-}) {
+function CardProduto({ nome, descricao, preco, imagemPrato, alergenicos }) {
+  // Garantir que alergenicos seja uma string e então dividir
+  const alergenicosArray = Array.isArray(alergenicos)
+    ? alergenicos
+    : alergenicos.split(",").map((alergenico) => alergenico.trim());
 
-  const alergenicosArray = alergenicos.split(",").map(alergenico => alergenico.trim());
-  const alergenicosFiltrados = alergenicosGlobais.filter(alergenico =>
+  const alergenicosFiltrados = alergenicosGlobais.filter((alergenico) =>
     alergenicosArray.includes(alergenico.nome)
   );
 

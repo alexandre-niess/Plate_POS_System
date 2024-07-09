@@ -13,14 +13,46 @@ import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
 import { Avatar, TextField, InputAdornment } from "@mui/material";
 import Footer from "../components/Footer";
-import { categorias, pratos } from "../components/Dados"; // Importa as categorias e pratos
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../src/firebaseConfig";
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const categorias = [
+  "Italiana",
+  "Americana",
+  "Japonesa",
+  "Saladas",
+  "Mexicana",
+  "Brasileira",
+  "Carnes",
+  "Bebidas",
+];
 
 export function Home() {
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
   const [searchMode, setSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [pratos, setPratos] = useState([]);
   const categoriasRefs = useRef({});
   const categoriasContainerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchPratos = async () => {
+      const pratosCollection = collection(db, "Pratos");
+      const pratosSnapshot = await getDocs(pratosCollection);
+      const pratosList = pratosSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPratos(pratosList);
+    };
+
+    fetchPratos();
+  }, []);
 
   const handleCategoriaClick = (categoria) => {
     if (categoriasRefs.current[categoria]) {
@@ -52,6 +84,27 @@ export function Home() {
     }
   };
 
+  const handleSearchIconClick = () => {
+    setSearchMode(true);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchClose = () => {
+    setSearchMode(false);
+    setSearchQuery("");
+  };
+
+  const filteredPratos = searchQuery
+    ? pratos.filter(
+        (prato) =>
+          prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : pratos;
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -77,28 +130,7 @@ export function Home() {
     return () => {
       observer.disconnect();
     };
-  }, [categorias, searchQuery]);
-
-  const handleSearchIconClick = () => {
-    setSearchMode(true);
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const handleSearchClose = () => {
-    setSearchMode(false);
-    setSearchQuery("");
-  };
-
-  const filteredPratos = searchQuery
-    ? pratos.filter(
-        (prato) =>
-          prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : pratos;
+  }, [categorias, searchQuery, filteredPratos]);
 
   return (
     <>

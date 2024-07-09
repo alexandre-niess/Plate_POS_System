@@ -6,7 +6,7 @@ function App() {
   const temaRest = createTheme({
     palette: {
       primary: {
-        main: "#F32B10",
+        main: "#2A3A44",
       },
       background: {
         default: "#fff",

@@ -99,10 +99,10 @@ export function Home() {
 
   const filteredPratos = searchQuery
     ? pratos.filter(
-        (prato) =>
-          prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      (prato) =>
+        prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     : pratos;
 
   useEffect(() => {
@@ -260,34 +260,34 @@ export function Home() {
       >
         {!searchQuery || filteredPratos.length > 0
           ? categorias.map((categoria, index) => (
-              <Box
-                key={categoria}
-                ref={(el) => (categoriasRefs.current[categoria] = el)}
-                onClick={() => handleCategoriaClick(categoria)}
+            <Box
+              key={categoria}
+              ref={(el) => (categoriasRefs.current[categoria] = el)}
+              onClick={() => handleCategoriaClick(categoria)}
+              sx={{
+                display: "inline-block",
+                marginRight: 3,
+                gap: "10px",
+                cursor: "pointer",
+                padding: 1,
+              }}
+            >
+              <Typography
+                component="h1"
                 sx={{
-                  display: "inline-block",
-                  marginRight: 3,
-                  gap: "10px",
-                  cursor: "pointer",
-                  padding: 1,
+                  fontWeight:
+                    categoriaVisivel === categoria ? "500" : "normal",
+                  color:
+                    categoriaVisivel === categoria
+                      ? "primary.main"
+                      : "text.primary",
+                  fontSize: "14px",
                 }}
               >
-                <Typography
-                  component="h1"
-                  sx={{
-                    fontWeight:
-                      categoriaVisivel === categoria ? "500" : "normal",
-                    color:
-                      categoriaVisivel === categoria
-                        ? "primary.main"
-                        : "text.primary",
-                    fontSize: "14px",
-                  }}
-                >
-                  {categoria}
-                </Typography>
-              </Box>
-            ))
+                {categoria}
+              </Typography>
+            </Box>
+          ))
           : null}
       </Box>
 

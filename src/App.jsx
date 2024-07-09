@@ -14,7 +14,8 @@ function App() {
       },
       text: {
         primary: "#333333",
-        secondary: "#fff",
+        secondary: "#8C8C8C",
+        white: "#fff",
         details: "#8C8C8C",
       },
       decorations: {

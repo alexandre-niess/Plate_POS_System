@@ -31,13 +31,13 @@ function Header() {
         >
           <Link to="/AppRestaurante">
             <IconButton>
-              <ArrowBackIosIcon sx={{ color: "text.secondary" }} />
+              <ArrowBackIosIcon sx={{ color: "text.white" }} />
             </IconButton>
           </Link>
           <Typography
             component="h1"
             align="left"
-            color="text.secondary"
+            color="text.white"
             sx={{ marginLeft: 1 }}
           >
             Sobre o estabelecimento

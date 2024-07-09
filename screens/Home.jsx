@@ -196,12 +196,12 @@ export function Home() {
                   alt="Logo do restaurante"
                   sx={{ width: 30, height: 30 }}
                 />
-                <Typography component="h1" align="left" color="text.secondary">
+                <Typography component="h1" align="left" color="text.white">
                   Restaurante Bom Sabor
                 </Typography>
               </Box>
               <IconButton onClick={handleSearchIconClick}>
-                <SearchIcon sx={{ color: "text.secondary" }} />
+                <SearchIcon sx={{ color: "text.white" }} />
               </IconButton>
             </>
           )}

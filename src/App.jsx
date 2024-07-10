@@ -6,11 +6,12 @@ function App() {
   const temaRest = createTheme({
     palette: {
       primary: {
-        main: "#2A3A44",
+        main: "#2A3A44", // cor primaria
       },
       background: {
         default: "#fff",
         secondary: "#f5f5f5",
+        cinza: "#CFCFCF",
       },
       text: {
         primary: "#333333",
@@ -23,7 +24,7 @@ function App() {
       },
     },
     shape: {
-      borderRadius: 4,
+      borderRadius: 5,
     },
     typography: {
       fontFamily: "Lexend, sans-serif",

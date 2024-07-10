@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
@@ -8,57 +8,60 @@ import Header from "../components/Header";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
-
-const cardData = [
-  {
-    id: 1,
-    title: "Categorias Cadastradas",
-    data: [
-      "Categoria 1",
-      "Categoria 2",
-      "Categoria 3",
-      "Categoria 4",
-      "Categoria 5",
-      "Categoria 6",
-      "Categoria 7",
-    ],
-  },
-  {
-    id: 2,
-    title: "Formas de Pagamento",
-    data: [
-      "Cartão de Crédito",
-      "Cartão de Débito",
-      "Dinheiro",
-      "Pix",
-      "Vale Refeição",
-      "Vale Alimentação",
-      "Transferência Bancária",
-    ],
-  },
-  {
-    id: 3,
-    title: "Horarios de Atendimento",
-    data: [
-      "Seg: 10:00 - 22:00",
-      "Ter: 10:00 - 22:00",
-      "Qua: 10:00 - 22:00",
-      "Qui: 10:00 - 22:00",
-      "Sex: 10:00 - 22:00",
-      "Sáb: 10:00 - 22:00",
-      "Dom: 10:00 - 22:00",
-    ],
-  },
-  {
-    id: 4,
-    title: "Endereço",
-    data: [
-      "Avenida Dom José Gaspar, 500 - Coração Eucarístico, Belo Horizonte - MG, 30535-901",
-    ],
-  },
-];
+import { RestaurantContext } from "../src/RestaurantContext"; // Ajuste o caminho conforme necessário
 
 export function Admin() {
+  const { restaurant, loading } = useContext(RestaurantContext);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!restaurant) {
+    return <div>Restaurante não encontrado.</div>;
+  }
+
+  const cardData = [
+    {
+      id: 1,
+      title: "Categorias Cadastradas",
+      data: restaurant.categorias || [],
+    },
+    {
+      id: 2,
+      title: "Formas de Pagamento",
+      data: restaurant.pagamentoCartao
+        ? [
+            "Cartão de Crédito",
+            "Cartão de Débito",
+            "Dinheiro",
+            "Pix",
+            "Vale Refeição",
+            "Vale Alimentação",
+            "Transferência Bancária",
+          ]
+        : [
+            "Dinheiro",
+            "Pix",
+            "Vale Refeição",
+            "Vale Alimentação",
+            "Transferência Bancária",
+          ],
+    },
+    {
+      id: 3,
+      title: "Horários de Atendimento",
+      data: restaurant.horarios || [],
+    },
+    {
+      id: 4,
+      title: "Endereço",
+      data: [
+        `${restaurant.logradouro}, ${restaurant.numero} - ${restaurant.bairro}, ${restaurant.cidade} - ${restaurant.estado}, ${restaurant.cep}`,
+      ],
+    },
+  ];
+
   return (
     <>
       <Header />
@@ -104,7 +107,6 @@ export function Admin() {
                       justifyContent: "center",
                       minHeight: "150px",
                       alignItems: "center",
-
                       padding: 2,
                       borderRadius: "4px",
                     }}

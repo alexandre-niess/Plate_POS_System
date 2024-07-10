@@ -15,6 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import Step4 from "./Step4";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, collection, addDoc, getDoc } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
@@ -39,14 +40,43 @@ export function CadRestaurante() {
     pagamentoCartao: false,
     cartoes: "",
     horarios: {
-      segunda: { hora: "", minuto: "" },
-      terca: { hora: "", minuto: "" },
-      quarta: { hora: "", minuto: "" },
-      quinta: { hora: "", minuto: "" },
-      sexta: { hora: "", minuto: "" },
-      sabado: { hora: "", minuto: "" },
-      domingo: { hora: "", minuto: "" },
+      segunda: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      terca: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      quarta: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      quinta: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      sexta: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      sabado: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      domingo: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
     },
+    categorias: [],
     imagem: null,
     imagemNome: "",
   });
@@ -55,6 +85,7 @@ export function CadRestaurante() {
     "Dados do Restaurante",
     "Formas de Pagamento",
     "Horários de Funcionamento",
+    "Categorias",
   ];
 
   const handleNext = () => {
@@ -79,6 +110,27 @@ export function CadRestaurante() {
         imagemURL = await getDownloadURL(storageRef);
       }
 
+      // Formatando os horários no formato desejado
+      const diasSemana = [
+        "segunda",
+        "terca",
+        "quarta",
+        "quinta",
+        "sexta",
+        "sabado",
+        "domingo",
+      ];
+      const horariosArray = diasSemana.map((dia) => {
+        const { abertura, fechamento, status } = formData.horarios[dia];
+        if (status === "fechado") {
+          return `${dia}: Fechado`;
+        } else if (status === "24Horas") {
+          return `${dia}: 24 horas`;
+        } else {
+          return `${dia}: ${abertura.hora}:${abertura.minuto} às ${fechamento.hora}:${fechamento.minuto}`;
+        }
+      });
+
       const restauranteData = {
         nome: formData.nome,
         cep: formData.cep,
@@ -90,36 +142,8 @@ export function CadRestaurante() {
         pagamentoDinheiro: formData.pagamentoDinheiro,
         pagamentoCartao: formData.pagamentoCartao,
         cartoes: formData.cartoes,
-        horarios: {
-          segunda: {
-            abertura: { hora: "", minuto: "" },
-            fechamento: { hora: "", minuto: "" },
-          },
-          terca: {
-            abertura: { hora: "", minuto: "" },
-            fechamento: { hora: "", minuto: "" },
-          },
-          quarta: {
-            abertura: { hora: "", minuto: "" },
-            fechamento: { hora: "", minuto: "" },
-          },
-          quinta: {
-            abertura: { hora: "", minuto: "" },
-            fechamento: { hora: "", minuto: "" },
-          },
-          sexta: {
-            abertura: { hora: "", minuto: "" },
-            fechamento: { hora: "", minuto: "" },
-          },
-          sabado: {
-            abertura: { hora: "", minuto: "" },
-            fechamento: { hora: "", minuto: "" },
-          },
-          domingo: {
-            abertura: { hora: "", minuto: "" },
-            fechamento: { hora: "", minuto: "" },
-          },
-        },
+        horarios: horariosArray,
+        categorias: formData.categorias,
         imagemURL: imagemURL,
       };
 
@@ -174,14 +198,43 @@ export function CadRestaurante() {
       pagamentoCartao: false,
       cartoes: "",
       horarios: {
-        segunda: { hora: "", minuto: "" },
-        terca: { hora: "", minuto: "" },
-        quarta: { hora: "", minuto: "" },
-        quinta: { hora: "", minuto: "" },
-        sexta: { hora: "", minuto: "" },
-        sabado: { hora: "", minuto: "" },
-        domingo: { hora: "", minuto: "" },
+        segunda: {
+          abertura: { hora: "", minuto: "" },
+          fechamento: { hora: "", minuto: "" },
+          status: "aberto",
+        },
+        terca: {
+          abertura: { hora: "", minuto: "" },
+          fechamento: { hora: "", minuto: "" },
+          status: "aberto",
+        },
+        quarta: {
+          abertura: { hora: "", minuto: "" },
+          fechamento: { hora: "", minuto: "" },
+          status: "aberto",
+        },
+        quinta: {
+          abertura: { hora: "", minuto: "" },
+          fechamento: { hora: "", minuto: "" },
+          status: "aberto",
+        },
+        sexta: {
+          abertura: { hora: "", minuto: "" },
+          fechamento: { hora: "", minuto: "" },
+          status: "aberto",
+        },
+        sabado: {
+          abertura: { hora: "", minuto: "" },
+          fechamento: { hora: "", minuto: "" },
+          status: "aberto",
+        },
+        domingo: {
+          abertura: { hora: "", minuto: "" },
+          fechamento: { hora: "", minuto: "" },
+          status: "aberto",
+        },
       },
+      categorias: [],
       imagem: null,
       imagemNome: "",
     });
@@ -221,6 +274,9 @@ export function CadRestaurante() {
           )}
           {activeStep === 2 && (
             <Step3 formData={formData} setFormData={setFormData} />
+          )}
+          {activeStep === 3 && (
+            <Step4 formData={formData} setFormData={setFormData} />
           )}
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button

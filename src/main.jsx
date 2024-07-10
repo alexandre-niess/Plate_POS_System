@@ -22,7 +22,14 @@ createRoot(document.getElementById("root")).render(
           <Route path="perfil-da-loja" element={<PerfilEmp />} />
           <Route path="login" element={<Login />} />
           <Route path="cadastro-admin" element={<CadAdmin />} />
-          <Route path="cadastro-restaurante" element={<CadRestaurante />} />
+          <Route
+            path="cadastro-restaurante"
+            element={
+              <ProtectedRoute>
+                <CadRestaurante />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="admin"
             element={

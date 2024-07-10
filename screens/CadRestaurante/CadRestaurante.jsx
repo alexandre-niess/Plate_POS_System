@@ -3,7 +3,14 @@ import Header from "../../components/Header";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Avatar, Button, Container, Stepper, Step, StepLabel } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Container,
+  Stepper,
+  Step,
+  StepLabel,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -44,7 +51,11 @@ export function CadRestaurante() {
     imagemNome: "",
   });
 
-  const steps = ["Dados do Restaurante", "Formas de Pagamento", "Horários de Funcionamento"];
+  const steps = [
+    "Dados do Restaurante",
+    "Formas de Pagamento",
+    "Horários de Funcionamento",
+  ];
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -79,11 +90,43 @@ export function CadRestaurante() {
         pagamentoDinheiro: formData.pagamentoDinheiro,
         pagamentoCartao: formData.pagamentoCartao,
         cartoes: formData.cartoes,
-        horarios: formData.horarios,
+        horarios: {
+          segunda: {
+            abertura: { hora: "", minuto: "" },
+            fechamento: { hora: "", minuto: "" },
+          },
+          terca: {
+            abertura: { hora: "", minuto: "" },
+            fechamento: { hora: "", minuto: "" },
+          },
+          quarta: {
+            abertura: { hora: "", minuto: "" },
+            fechamento: { hora: "", minuto: "" },
+          },
+          quinta: {
+            abertura: { hora: "", minuto: "" },
+            fechamento: { hora: "", minuto: "" },
+          },
+          sexta: {
+            abertura: { hora: "", minuto: "" },
+            fechamento: { hora: "", minuto: "" },
+          },
+          sabado: {
+            abertura: { hora: "", minuto: "" },
+            fechamento: { hora: "", minuto: "" },
+          },
+          domingo: {
+            abertura: { hora: "", minuto: "" },
+            fechamento: { hora: "", minuto: "" },
+          },
+        },
         imagemURL: imagemURL,
       };
 
-      const docRef = await addDoc(collection(db, "Restaurantes"), restauranteData);
+      const docRef = await addDoc(
+        collection(db, "Restaurantes"),
+        restauranteData
+      );
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -101,7 +144,15 @@ export function CadRestaurante() {
   };
 
   const validateFields = () => {
-    const requiredFields = ["nome", "cep", "logradouro", "numero", "bairro", "cidade", "estado"];
+    const requiredFields = [
+      "nome",
+      "cep",
+      "logradouro",
+      "numero",
+      "bairro",
+      "cidade",
+      "estado",
+    ];
     for (const field of requiredFields) {
       if (!formData[field]) {
         return false;
@@ -162,9 +213,15 @@ export function CadRestaurante() {
               </Step>
             ))}
           </Stepper>
-          {activeStep === 0 && <Step1 formData={formData} setFormData={setFormData} />}
-          {activeStep === 1 && <Step2 formData={formData} setFormData={setFormData} />}
-          {activeStep === 2 && <Step3 formData={formData} setFormData={setFormData} />}
+          {activeStep === 0 && (
+            <Step1 formData={formData} setFormData={setFormData} />
+          )}
+          {activeStep === 1 && (
+            <Step2 formData={formData} setFormData={setFormData} />
+          )}
+          {activeStep === 2 && (
+            <Step3 formData={formData} setFormData={setFormData} />
+          )}
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"

@@ -11,9 +11,10 @@ import { CadAdmin } from "../screens/CadAdmin.jsx";
 import ProtectedRoute from "./ProtectedRoute";
 import CadRestaurante from "../screens/CadRestaurante/CadRestaurante.jsx";
 import Admin from "../screens/Admin.jsx";
+import { RestaurantProvider } from "./RestaurantContext.jsx"; // Importe o provider
 
 createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <RestaurantProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/AppRestaurante" element={<App />}>
@@ -42,5 +43,5 @@ createRoot(document.getElementById("root")).render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </RestaurantProvider>
 );

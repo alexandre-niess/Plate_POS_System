@@ -8,7 +8,7 @@ import { createRoot } from "react-dom";
 import { CadPrato } from "../screens/CadPrato.jsx";
 import { Login } from "../screens/Login.jsx";
 import { CadAdmin } from "../screens/CadAdmin.jsx";
-import ProtectedRoute from "./ProtectedRoute"; // Importando o componente de rota protegida
+import ProtectedRoute from "./ProtectedRoute";
 import CadRestaurante from "../screens/CadRestaurante/CadRestaurante.jsx";
 import Admin from "../screens/Admin.jsx";
 
@@ -27,6 +27,14 @@ createRoot(document.getElementById("root")).render(
             element={
               <ProtectedRoute>
                 <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="cad-prato"
+            element={
+              <ProtectedRoute>
+                <CadPrato />
               </ProtectedRoute>
             }
           />

@@ -1,6 +1,5 @@
-// src/RestaurantContext.jsx
 import React, { createContext, useState, useEffect } from "react";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./firebaseConfig"; // Ajuste o caminho conforme necessário
 
@@ -17,11 +16,10 @@ const RestaurantProvider = ({ children }) => {
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
-        const docRef = doc(db, "Restaurantes", "choFHp7U8D6etWBYLZrs"); // Substitua "restauranteId" pelo ID do documento do restaurante
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          setRestaurant(docSnap.data());
+        const querySnapshot = await getDocs(collection(db, "Restaurantes"));
+        if (!querySnapshot.empty) {
+          const restaurantData = querySnapshot.docs[0].data();
+          setRestaurant(restaurantData);
         } else {
           console.log("Nenhum documento encontrado!");
         }

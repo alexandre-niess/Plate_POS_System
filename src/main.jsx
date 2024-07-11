@@ -12,6 +12,7 @@ import CadRestaurante from "../screens/CadRestaurante/CadRestaurante.jsx";
 import Admin from "../screens/Admin.jsx";
 import { RestaurantProvider } from "./RestaurantContext.jsx"; // Importe o provider
 import { PratoProvider } from "./PratoContext.jsx";
+import EditRestaurante from "../screens/EditRestaurante/EditRestaurante.jsx";
 
 createRoot(document.getElementById("root")).render(
   <RestaurantProvider>
@@ -36,6 +37,14 @@ createRoot(document.getElementById("root")).render(
               element={
                 <ProtectedRoute>
                   <Admin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="editar-restaurante"
+              element={
+                <ProtectedRoute>
+                  <EditRestaurante />
                 </ProtectedRoute>
               }
             />

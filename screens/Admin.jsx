@@ -19,7 +19,7 @@ export function Admin() {
   if (!restaurant) {
     return (
       <>
-        <Header headerType="home" />
+        <Header headerType="admin1" />
         <Box
           sx={{
             display: "flex",

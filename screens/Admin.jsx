@@ -77,13 +77,15 @@ export function Admin() {
           >
             Informações do Restaurante
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: { xs: "20px", md: "0" } }}
-          >
-            Editar informações
-          </Button>
+          <Link to="/AppRestaurante/editar-restaurante">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginTop: { xs: "20px", md: "0" } }}
+            >
+              Editar informações
+            </Button>
+          </Link>
         </Box>
         <Box
           sx={{

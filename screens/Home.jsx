@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import CardProduto from "../components/CardProduto";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,26 +13,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
 import { Avatar, TextField, InputAdornment } from "@mui/material";
 import Footer from "../components/Footer";
-import { usePratos } from "../src/PratoContext"; // Importe o hook do contexto de pratos
-import { useContext } from "react";
-import { RestaurantContext } from "../src/RestaurantContext"; // Importe o contexto de restaurante
+import { usePratos } from "../src/PratoContext";
+import { RestaurantContext } from "../src/RestaurantContext";
 import IsOpen from "/components/IsOpen.jsx";
 
-const categorias = [
-  "Italiana",
-  "Americana",
-  "Japonesa",
-  "Saladas",
-  "Mexicana",
-  "Brasileira",
-  "Carnes",
-  "Bebidas",
-];
-
 export function Home() {
-  const { pratos, loading: pratosLoading } = usePratos(); // Use o hook para acessar os pratos
+  const { pratos, loading: pratosLoading } = usePratos();
   const { restaurant, loading: restaurantLoading } =
-    useContext(RestaurantContext); // Use o hook para acessar os dados do restaurante
+    useContext(RestaurantContext);
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
   const [searchMode, setSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,7 +29,7 @@ export function Home() {
 
   const handleCategoriaClick = (categoria) => {
     if (categoriasRefs.current[categoria]) {
-      const offsetTop = categoriasRefs.current[categoria].offsetTop - 160; // Altura do Header + espaço extra
+      const offsetTop = categoriasRefs.current[categoria].offsetTop - 160;
       window.scrollTo({
         top: offsetTop,
         behavior: "smooth",
@@ -52,7 +40,9 @@ export function Home() {
   };
 
   const centralizarCategoria = (categoria) => {
-    const categoriaIndex = categorias.findIndex((cat) => cat === categoria);
+    const categoriaIndex = restaurant.categorias.findIndex(
+      (cat) => cat === categoria
+    );
     if (categoriasContainerRef.current) {
       const categoryElement =
         categoriasContainerRef.current.children[categoriaIndex];
@@ -103,30 +93,36 @@ export function Home() {
       },
       {
         root: null,
-        rootMargin: "0px 0px -75% 0px", // Ajusta a margem inferior para que a área de observação esteja na posição desejada
-        threshold: 0.1, // Ajusta o threshold conforme necessário
+        rootMargin: "0px 0px -75% 0px",
+        threshold: 0.1,
       }
     );
 
-    Object.values(categoriasRefs.current).forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
+    if (restaurant && restaurant.categorias) {
+      Object.values(categoriasRefs.current).forEach((ref) => {
+        if (ref) observer.observe(ref);
+      });
+    }
 
     return () => {
       observer.disconnect();
     };
-  }, [categorias, searchQuery, filteredPratos]);
+  }, [restaurant, searchQuery, filteredPratos]);
+
+  if (restaurantLoading) {
+    return (
+      <Box sx={{ padding: 2, textAlign: "center" }}>
+        <Typography variant="h6" component="p">
+          Carregando...
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <>
       <CssBaseline />
-      <Box
-        sx={{
-          top: 0,
-          position: "fixed",
-          width: "100%",
-        }}
-      >
+      <Box sx={{ top: 0, position: "fixed", width: "100%" }}>
         <IsOpen />
         <Box
           sx={{
@@ -156,14 +152,12 @@ export function Home() {
                   width: "100%",
                   backgroundColor: "white",
                   "& .MuiOutlinedInput-root": {
-                    height: "40px", // Ajuste a altura conforme necessário
+                    height: "40px",
                   },
                   borderRadius: 1,
                 }}
                 InputProps={{
-                  style: {
-                    height: "40px", // Ajuste a altura conforme necessário
-                  },
+                  style: { height: "40px" },
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton onClick={handleSearchClose}>
@@ -229,7 +223,7 @@ export function Home() {
         }}
       >
         {!searchQuery || filteredPratos.length > 0
-          ? categorias.map((categoria, index) => (
+          ? restaurant.categorias.map((categoria, index) => (
               <Box
                 key={categoria}
                 ref={(el) => (categoriasRefs.current[categoria] = el)}
@@ -261,12 +255,7 @@ export function Home() {
           : null}
       </Box>
 
-      <Container
-        sx={{
-          paddingTop: "180px",
-          paddingBottom: "16px",
-        }}
-      >
+      <Container sx={{ paddingTop: "180px", paddingBottom: "16px" }}>
         {pratosLoading ? (
           <Box sx={{ padding: 2, textAlign: "center" }}>
             <Typography variant="h6" component="p">
@@ -280,7 +269,7 @@ export function Home() {
             </Typography>
           </Box>
         ) : (
-          categorias.map((categoria) => (
+          restaurant.categorias.map((categoria) => (
             <Box
               key={categoria}
               id={categoria}

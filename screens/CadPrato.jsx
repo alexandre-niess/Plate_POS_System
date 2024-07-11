@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../components/Header";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -26,22 +26,12 @@ import {
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../src/firebaseConfig";
+import { RestaurantContext } from "../src/RestaurantContext"; // Import the context
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
-
-const categorias = [
-  "Italiana",
-  "Americana",
-  "Japonesa",
-  "Saladas",
-  "Mexicana",
-  "Brasileira",
-  "Carnes",
-  "Bebidas",
-];
 
 const alergenicos = [
   "Açúcar",
@@ -53,6 +43,7 @@ const alergenicos = [
 ];
 
 export function CadPrato() {
+  const { restaurant, loading } = useContext(RestaurantContext); // Use the context
   const [selectedAlergenicos, setSelectedAlergenicos] = useState([]);
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
@@ -165,10 +156,20 @@ export function CadPrato() {
     }
   };
 
+  if (loading) {
+    return (
+      <Box sx={{ padding: 2, textAlign: "center" }}>
+        <Typography variant="h6" component="p">
+          Carregando...
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <>
       <CssBaseline />
-      <Header headerType="home" />
+      <Header headerType="cad-prato" />
       <Container maxWidth="sm">
         <Box
           sx={{
@@ -233,7 +234,7 @@ export function CadPrato() {
               error={errors.categoria}
               helperText={errors.categoria ? "Categoria é obrigatória" : ""}
             >
-              {categorias.map((option) => (
+              {restaurant.categorias.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>

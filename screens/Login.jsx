@@ -15,8 +15,6 @@ import Header from "../components/Header";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-const theme = createTheme();
-
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

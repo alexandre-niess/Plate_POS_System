@@ -63,7 +63,7 @@ export function CadAdmin() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
+      <Header headerType="home" />
       <Box
         sx={{
           display: "flex",

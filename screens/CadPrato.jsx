@@ -168,7 +168,7 @@ export function CadPrato() {
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header headerType="home" />
       <Container maxWidth="sm">
         <Box
           sx={{

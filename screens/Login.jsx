@@ -39,7 +39,7 @@ export function Login() {
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header headerType="login" />
       <Box
         sx={{
           display: "flex",

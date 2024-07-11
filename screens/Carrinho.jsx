@@ -34,7 +34,7 @@ export function PerfilEmp() {
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header headerType="home" />
       <Box sx={{ marginTop: "74px" }}>
         <Box
           sx={{
@@ -105,12 +105,7 @@ export function PerfilEmp() {
 }
 
 function Section({ title, children }) {
-  return (
-    <>
-
-
-    </>
-  );
+  return <></>;
 }
 
 export default PerfilEmp;

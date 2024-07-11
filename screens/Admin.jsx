@@ -6,6 +6,7 @@ import { RestaurantContext } from "../src/RestaurantContext"; // Ajuste o caminh
 import Button from "@mui/material/Button";
 import CardAdmin from "../components/CardAdmin"; // Importe o componente CardAdmin
 import Typography from "@mui/material/Typography";
+import { TabelaProdutos } from "../components/TabelaProdutos";
 
 export function Admin() {
   const { restaurant, loading } = useContext(RestaurantContext);
@@ -14,10 +15,11 @@ export function Admin() {
     return <div>Loading...</div>;
   }
 
+  console.log(restaurant);
   if (!restaurant) {
     return (
       <>
-        <Header />
+        <Header headerType="home" />
         <Box
           sx={{
             display: "flex",
@@ -54,7 +56,7 @@ export function Admin() {
 
   return (
     <>
-      <Header />
+      <Header headerType="admin" />
       <Box sx={{ margin: "1%" }}>
         <Box
           sx={{
@@ -70,12 +72,8 @@ export function Admin() {
           }}
         >
           <Typography
-            variant="h4"
-            sx={{
-              margin: { xs: "40px 0 20px", md: "40px 0" },
-              fontSize: { xs: "1.5rem", sm: "1.75rem", md: "2rem" },
-              textAlign: { xs: "center", md: "left" },
-            }}
+            component="h1"
+            sx={{ fontSize: "18px", fontWeight: "600" }}
           >
             Informações do Restaurante
           </Typography>
@@ -97,31 +95,9 @@ export function Admin() {
         >
           <CardAdmin />
         </Box>
-        <Link to="/AppRestaurante/cad-prato">
-          <Button
-            variant="contained"
-            sx={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-            }}
-          >
-            Adicionar produto
-          </Button>
-        </Link>
-        <Link to="/AppRestaurante/cadastro-restaurante">
-          <Button
-            variant="contained"
-            sx={{
-              position: "fixed",
-              bottom: "20px",
-              right: "140px",
-            }}
-          >
-            Cadastrar restaurante
-          </Button>
-        </Link>
       </Box>
+
+      {/* <TabelaProdutos />*/}
     </>
   );
 }

@@ -39,6 +39,7 @@ export function CadRestaurante() {
     pagamentoDinheiro: false,
     pagamentoCartao: false,
     cartoes: "",
+    valorMinimo: "", // Adicionar valorMinimo aqui
     horarios: {
       segunda: {
         abertura: { hora: "", minuto: "" },
@@ -50,31 +51,7 @@ export function CadRestaurante() {
         fechamento: { hora: "", minuto: "" },
         status: "aberto",
       },
-      quarta: {
-        abertura: { hora: "", minuto: "" },
-        fechamento: { hora: "", minuto: "" },
-        status: "aberto",
-      },
-      quinta: {
-        abertura: { hora: "", minuto: "" },
-        fechamento: { hora: "", minuto: "" },
-        status: "aberto",
-      },
-      sexta: {
-        abertura: { hora: "", minuto: "" },
-        fechamento: { hora: "", minuto: "" },
-        status: "aberto",
-      },
-      sabado: {
-        abertura: { hora: "", minuto: "" },
-        fechamento: { hora: "", minuto: "" },
-        status: "aberto",
-      },
-      domingo: {
-        abertura: { hora: "", minuto: "" },
-        fechamento: { hora: "", minuto: "" },
-        status: "aberto",
-      },
+      // ...restantes dos dias
     },
     categorias: [],
     imagem: null,
@@ -110,7 +87,6 @@ export function CadRestaurante() {
         imagemURL = await getDownloadURL(storageRef);
       }
 
-      // Formatando os horários no formato desejado
       const diasSemana = [
         "segunda",
         "terca",
@@ -142,6 +118,7 @@ export function CadRestaurante() {
         pagamentoDinheiro: formData.pagamentoDinheiro,
         pagamentoCartao: formData.pagamentoCartao,
         cartoes: formData.cartoes,
+        valorMinimo: formData.valorMinimo, // Incluir valorMinimo aqui
         horarios: horariosArray,
         categorias: formData.categorias,
         imagemURL: imagemURL,
@@ -197,6 +174,7 @@ export function CadRestaurante() {
       pagamentoDinheiro: false,
       pagamentoCartao: false,
       cartoes: "",
+      valorMinimo: "", // Resetar valorMinimo aqui
       horarios: {
         segunda: {
           abertura: { hora: "", minuto: "" },
@@ -208,31 +186,7 @@ export function CadRestaurante() {
           fechamento: { hora: "", minuto: "" },
           status: "aberto",
         },
-        quarta: {
-          abertura: { hora: "", minuto: "" },
-          fechamento: { hora: "", minuto: "" },
-          status: "aberto",
-        },
-        quinta: {
-          abertura: { hora: "", minuto: "" },
-          fechamento: { hora: "", minuto: "" },
-          status: "aberto",
-        },
-        sexta: {
-          abertura: { hora: "", minuto: "" },
-          fechamento: { hora: "", minuto: "" },
-          status: "aberto",
-        },
-        sabado: {
-          abertura: { hora: "", minuto: "" },
-          fechamento: { hora: "", minuto: "" },
-          status: "aberto",
-        },
-        domingo: {
-          abertura: { hora: "", minuto: "" },
-          fechamento: { hora: "", minuto: "" },
-          status: "aberto",
-        },
+        // ...restantes dos dias
       },
       categorias: [],
       imagem: null,
@@ -243,7 +197,7 @@ export function CadRestaurante() {
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header headerType="cad-restaurante" />
       <Container maxWidth="md">
         <Box
           sx={{

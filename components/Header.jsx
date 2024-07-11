@@ -36,6 +36,31 @@ function Header({ headerType }) {
           </Typography>
         </Box>
       );
+    }
+    if (headerType === "admin1") {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            height: 64,
+            padding: 1,
+            backgroundColor: "primary.main",
+            width: "100%",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <Typography
+            component="h1"
+            align="left"
+            color="text.white"
+            sx={{ marginLeft: 1 }}
+          >
+            Painel do Admin
+          </Typography>
+        </Box>
+      );
     } else if (headerType === "dadosRest") {
       return (
         <Box
@@ -62,6 +87,34 @@ function Header({ headerType }) {
             sx={{ marginLeft: 1 }}
           >
             Perfil do Restaurante
+          </Typography>
+        </Box>
+      );
+    } else if (headerType === "cad-prato") {
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "left",
+            alignItems: "center",
+            height: 64,
+            padding: 1,
+            backgroundColor: "primary.main",
+            width: "100%",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          <IconButton>
+            <ArrowBackIosIcon sx={{ color: "text.white" }} />
+          </IconButton>
+
+          <Typography
+            component="h1"
+            align="left"
+            color="text.white"
+            sx={{ marginLeft: 1 }}
+          >
+            Cadastro de produtos
           </Typography>
         </Box>
       );

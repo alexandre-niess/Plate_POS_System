@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Typography, TextField, FormControlLabel, Checkbox, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Button,
+} from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const Step2 = ({ formData, setFormData }) => {
@@ -21,7 +28,11 @@ const Step2 = ({ formData, setFormData }) => {
 
   return (
     <Box component="form" sx={{ mt: 3 }}>
-      <Typography component="h2" variant="h6" sx={{ textAlign: "center", fontSize: "16px", fontWeight: "500" }}>
+      <Typography
+        component="h2"
+        variant="h6"
+        sx={{ textAlign: "center", fontSize: "16px", fontWeight: "500" }}
+      >
         Formas de pagamento:
       </Typography>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -61,7 +72,39 @@ const Step2 = ({ formData, setFormData }) => {
           onChange={handleInputChange}
         />
       )}
-      <Typography component="h2" variant="h6" sx={{ textAlign: "center", fontSize: "16px", fontWeight: "500", marginTop: "30px" }}>
+      <Typography
+        component="h2"
+        variant="h6"
+        sx={{
+          textAlign: "center",
+          fontSize: "16px",
+          fontWeight: "500",
+          marginTop: "30px",
+        }}
+      >
+        Valor Mínimo para Pedido:
+      </Typography>
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        id="valorMinimo"
+        label="Valor Mínimo para Pedido"
+        name="valorMinimo"
+        autoComplete="valorMinimo"
+        value={formData.valorMinimo}
+        onChange={handleInputChange}
+      />
+      <Typography
+        component="h2"
+        variant="h6"
+        sx={{
+          textAlign: "center",
+          fontSize: "16px",
+          fontWeight: "500",
+          marginTop: "30px",
+        }}
+      >
         Foto de Perfil do Restaurante:
       </Typography>
       <Button
@@ -92,7 +135,9 @@ const Step2 = ({ formData, setFormData }) => {
                 imagem: null,
                 imagemNome: "",
               }));
-              alert("Por favor, selecione um arquivo de imagem válido (jpeg, png, gif).");
+              alert(
+                "Por favor, selecione um arquivo de imagem válido (jpeg, png, gif)."
+              );
             }
           }}
         />

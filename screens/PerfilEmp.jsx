@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Header from "../components/Header";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -6,35 +6,60 @@ import Typography from "@mui/material/Typography";
 import { Avatar } from "@mui/material";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import PaymentsIcon from "@mui/icons-material/Payments";
-
-const paymentMethods = [
-  {
-    icon: <CreditCardIcon />,
-    label: "Cartões:",
-    description:
-      "Diners Club, Mastercard, Amex, Hipercard, Visa, Elo, Refeição Mastercard Débito, Visa Sodexo Refeição, Ben Débito, Alelo Refeição, Refeição",
-  },
-  {
-    icon: <PaymentsIcon />,
-    label: "Dinheiro",
-  },
-];
-
-const openingHours = [
-  "Domingo: 10h às 23h30m",
-  "Segunda-feira: 10h às 23h30m",
-  "Terça-feira: 10h às 23h30m",
-  "Quarta-feira: 10h às 23h30m",
-  "Quinta-feira: 10h às 23h30m",
-  "Sexta-feira: 10h às 23h30m",
-  "Sábado: 10h às 23h30m",
-];
+import { RestaurantContext } from "../src/RestaurantContext"; // Importe o contexto de restaurante
 
 export function PerfilEmp() {
+  const { restaurant, loading } = useContext(RestaurantContext);
+
+  if (loading) {
+    return (
+      <>
+        <CssBaseline />
+        <Header headerType="home" />
+        <Box sx={{ marginTop: "74px", textAlign: "center" }}>
+          <Typography component="h1" variant="h6" color="text.primary">
+            Carregando...
+          </Typography>
+        </Box>
+      </>
+    );
+  }
+
+  if (!restaurant) {
+    return (
+      <>
+        <CssBaseline />
+        <Header headerType="home" />
+        <Box sx={{ marginTop: "74px", textAlign: "center" }}>
+          <Typography component="h1" variant="h6" color="text.primary">
+            Dados do restaurante não encontrados.
+          </Typography>
+        </Box>
+      </>
+    );
+  }
+
+  const {
+    imagemURL,
+    nome,
+    endereco = {},
+    horarios = [],
+    pagamentoDinheiro,
+    pagamentoCartao,
+    cartoes = [],
+    logradouro = "",
+    numero = "",
+    bairro = "",
+    cidade = "",
+    estado = "",
+    cep = "",
+  } = restaurant;
+
+  console.log(restaurant);
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header headerType="dadosRest" />
       <Box sx={{ marginTop: "74px" }}>
         <Box
           sx={{
@@ -46,7 +71,7 @@ export function PerfilEmp() {
           }}
         >
           <Avatar
-            src="../public/logo.png"
+            src={imagemURL}
             alt="Logo do restaurante"
             sx={{ width: 50, height: 50 }}
           />
@@ -56,39 +81,56 @@ export function PerfilEmp() {
             align="left"
             color="text.primary"
           >
-            Restaurante Bom Sabor
+            {nome}
           </Typography>
         </Box>
         <Section title="Endereço">
-          <Typography component="h1" color="text.details" sx={{ fontSize: "12px", }}>
-            Avenida Dom José Gaspar, 500 - Coração Eucarístico, Belo Horizonte -
-            MG, 30535-901
+          <Typography
+            component="h1"
+            color="text.details"
+            sx={{ fontSize: "12px" }}
+          >
+            {logradouro}, {numero} - {bairro}, {cidade} - {estado}, {cep}
           </Typography>
         </Section>
-
         <Section title="Formas de Pagamento">
-          {paymentMethods.map((method, index) => (
-            <Box key={index} sx={{ display: "flex", gap: "10px" }}>
-              {method.icon}
+          {pagamentoDinheiro && (
+            <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <PaymentsIcon />
               <Typography
                 component="h1"
                 align="left"
                 color="text.primary"
                 sx={{ fontWeight: "600", fontSize: "12px" }}
               >
-                {method.label}
+                Dinheiro
               </Typography>
-              {method.description && (
-                <Typography component="h1" align="left" color="text.details" sx={{ fontSize: "12px" }}>
-                  {method.description}
-                </Typography>
-              )}
             </Box>
-          ))}
+          )}
+          {pagamentoCartao && cartoes.length > 0 && (
+            <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
+              <CreditCardIcon />
+              <Typography
+                component="h1"
+                align="left"
+                color="text.primary"
+                sx={{ fontWeight: "600", fontSize: "12px" }}
+              >
+                Cartões:
+              </Typography>
+              <Typography
+                component="h1"
+                align="left"
+                color="text.details"
+                sx={{ fontSize: "12px" }}
+              >
+                {cartoes}
+              </Typography>
+            </Box>
+          )}
         </Section>
-
         <Section title="Horário de Funcionamento">
-          {openingHours.map((hour, index) => (
+          {horarios.map((horario, index) => (
             <Typography
               key={index}
               component="h1"
@@ -96,7 +138,7 @@ export function PerfilEmp() {
               color="text.details"
               sx={{ fontSize: "12px" }}
             >
-              {hour}
+              {horario}
             </Typography>
           ))}
         </Section>

@@ -13,13 +13,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
 import { Avatar, TextField, InputAdornment } from "@mui/material";
 import Footer from "../components/Footer";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../src/firebaseConfig";
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+import { usePratos } from "../src/PratoContext"; // Importe o hook do contexto de pratos
+import { useContext } from "react";
+import { RestaurantContext } from "../src/RestaurantContext"; // Importe o contexto de restaurante
+import IsOpen from "/components/IsOpen.jsx";
 
 const categorias = [
   "Italiana",
@@ -33,26 +30,14 @@ const categorias = [
 ];
 
 export function Home() {
+  const { pratos, loading: pratosLoading } = usePratos(); // Use o hook para acessar os pratos
+  const { restaurant, loading: restaurantLoading } =
+    useContext(RestaurantContext); // Use o hook para acessar os dados do restaurante
   const [categoriaVisivel, setCategoriaVisivel] = useState("");
   const [searchMode, setSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [pratos, setPratos] = useState([]);
   const categoriasRefs = useRef({});
   const categoriasContainerRef = useRef(null);
-
-  useEffect(() => {
-    const fetchPratos = async () => {
-      const pratosCollection = collection(db, "Pratos");
-      const pratosSnapshot = await getDocs(pratosCollection);
-      const pratosList = pratosSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setPratos(pratosList);
-    };
-
-    fetchPratos();
-  }, []);
 
   const handleCategoriaClick = (categoria) => {
     if (categoriasRefs.current[categoria]) {
@@ -99,10 +84,10 @@ export function Home() {
 
   const filteredPratos = searchQuery
     ? pratos.filter(
-      (prato) =>
-        prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+        (prato) =>
+          prato.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          prato.descricao.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     : pratos;
 
   useEffect(() => {
@@ -142,30 +127,7 @@ export function Home() {
           width: "100%",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            position: "relative",
-            padding: 1,
-            height: 20,
-            width: "100%",
-            zIndex: 100,
-            backgroundColor: "background.secondary",
-            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)", // Adiciona sombra
-          }}
-        >
-          <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
-            Aberto até as 22h - Pedido min. R$20,00
-          </Typography>
-          <Link to="perfil-da-loja" style={{ color: "inherit" }}>
-            <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
-              Ver perfil da loja
-            </Typography>
-          </Link>
-        </Box>
+        <IsOpen />
         <Box
           sx={{
             display: "flex",
@@ -223,14 +185,22 @@ export function Home() {
                   justifyContent: "center",
                 }}
               >
-                <Avatar
-                  src="../public/logo.png"
-                  alt="Logo do restaurante"
-                  sx={{ width: 30, height: 30 }}
-                />
-                <Typography component="h1" align="left" color="text.white">
-                  Restaurante Bom Sabor
-                </Typography>
+                {restaurantLoading ? (
+                  <Typography component="h1" align="left" color="text.white">
+                    Carregando...
+                  </Typography>
+                ) : (
+                  <>
+                    <Avatar
+                      src={restaurant.imagemURL}
+                      alt="Logo do restaurante"
+                      sx={{ width: 30, height: 30 }}
+                    />
+                    <Typography component="h1" align="left" color="text.white">
+                      {restaurant.nome}
+                    </Typography>
+                  </>
+                )}
               </Box>
               <IconButton onClick={handleSearchIconClick}>
                 <SearchIcon sx={{ color: "text.white" }} />
@@ -260,34 +230,34 @@ export function Home() {
       >
         {!searchQuery || filteredPratos.length > 0
           ? categorias.map((categoria, index) => (
-            <Box
-              key={categoria}
-              ref={(el) => (categoriasRefs.current[categoria] = el)}
-              onClick={() => handleCategoriaClick(categoria)}
-              sx={{
-                display: "inline-block",
-                marginRight: 3,
-                gap: "10px",
-                cursor: "pointer",
-                padding: 1,
-              }}
-            >
-              <Typography
-                component="h1"
+              <Box
+                key={categoria}
+                ref={(el) => (categoriasRefs.current[categoria] = el)}
+                onClick={() => handleCategoriaClick(categoria)}
                 sx={{
-                  fontWeight:
-                    categoriaVisivel === categoria ? "500" : "normal",
-                  color:
-                    categoriaVisivel === categoria
-                      ? "primary.main"
-                      : "text.primary",
-                  fontSize: "14px",
+                  display: "inline-block",
+                  marginRight: 3,
+                  gap: "10px",
+                  cursor: "pointer",
+                  padding: 1,
                 }}
               >
-                {categoria}
-              </Typography>
-            </Box>
-          ))
+                <Typography
+                  component="h1"
+                  sx={{
+                    fontWeight:
+                      categoriaVisivel === categoria ? "500" : "normal",
+                    color:
+                      categoriaVisivel === categoria
+                        ? "primary.main"
+                        : "text.primary",
+                    fontSize: "14px",
+                  }}
+                >
+                  {categoria}
+                </Typography>
+              </Box>
+            ))
           : null}
       </Box>
 
@@ -297,7 +267,13 @@ export function Home() {
           paddingBottom: "16px",
         }}
       >
-        {filteredPratos.length === 0 ? (
+        {pratosLoading ? (
+          <Box sx={{ padding: 2, textAlign: "center" }}>
+            <Typography variant="h6" component="p">
+              Carregando...
+            </Typography>
+          </Box>
+        ) : filteredPratos.length === 0 ? (
           <Box sx={{ padding: 2, textAlign: "center" }}>
             <Typography variant="h6" component="p">
               Nenhum resultado encontrado.

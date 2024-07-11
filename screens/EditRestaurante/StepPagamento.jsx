@@ -6,24 +6,16 @@ import {
   FormControlLabel,
   TextField,
 } from "@mui/material";
-import { useContext } from "react";
-import { RestaurantContext } from "../../src/RestaurantContext";
 
-const StepPagamento = () => {
-  const { restaurant, setRestaurant, loading } = useContext(RestaurantContext);
-
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-
+const StepPagamento = ({ formData, handleChange }) => {
   const handlePagamentoChange = (e) => {
     const { name, checked } = e.target;
-    setRestaurant((prev) => ({ ...prev, [name]: checked }));
+    handleChange({ [name]: checked });
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setRestaurant((prev) => ({ ...prev, [name]: value }));
+    handleChange({ [name]: value });
   };
 
   return (
@@ -40,7 +32,7 @@ const StepPagamento = () => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={restaurant?.pagamentoDinheiro || false}
+                checked={formData.pagamentoDinheiro || false}
                 onChange={handlePagamentoChange}
                 name="pagamentoDinheiro"
               />
@@ -50,7 +42,7 @@ const StepPagamento = () => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={restaurant?.pagamentoCartao || false}
+                checked={formData.pagamentoCartao || false}
                 onChange={handlePagamentoChange}
                 name="pagamentoCartao"
               />
@@ -58,7 +50,7 @@ const StepPagamento = () => {
             label="Cartão"
           />
         </Box>
-        {restaurant?.pagamentoCartao && (
+        {formData.pagamentoCartao && (
           <TextField
             margin="normal"
             required
@@ -69,7 +61,7 @@ const StepPagamento = () => {
             autoComplete="cartoes"
             multiline
             rows={2}
-            value={restaurant?.cartoes || ""}
+            value={formData.cartoes || ""}
             onChange={handleInputChange}
           />
         )}
@@ -90,7 +82,7 @@ const StepPagamento = () => {
           label="Valor Mínimo para Pedido"
           name="valorMinimo"
           autoComplete="valorMinimo"
-          value={restaurant?.valorMinimo || ""}
+          value={formData.valorMinimo || ""}
           onChange={handleInputChange}
         />
       </Box>

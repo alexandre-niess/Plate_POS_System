@@ -1,18 +1,10 @@
 import React from "react";
 import { Grid, TextField } from "@mui/material";
-import { useContext } from "react";
-import { RestaurantContext } from "../../src/RestaurantContext";
 
-const StepNomeEndereco = () => {
-  const { restaurant, setRestaurant, loading } = useContext(RestaurantContext);
-
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-
-  const handleChange = (e) => {
+const StepNomeEndereco = ({ formData, handleChange }) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setRestaurant((prev) => ({ ...prev, [name]: value }));
+    handleChange({ [name]: value });
   };
 
   return (
@@ -25,8 +17,8 @@ const StepNomeEndereco = () => {
           label="Nome"
           name="nome"
           autoComplete="nome"
-          value={restaurant?.nome || ""}
-          onChange={handleChange}
+          value={formData.nome || ""}
+          onChange={handleInputChange}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -37,8 +29,8 @@ const StepNomeEndereco = () => {
           label="CEP"
           name="cep"
           autoComplete="cep"
-          value={restaurant?.cep || ""}
-          onChange={handleChange}
+          value={formData.cep || ""}
+          onChange={handleInputChange}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -49,8 +41,8 @@ const StepNomeEndereco = () => {
           label="Logradouro"
           name="logradouro"
           autoComplete="logradouro"
-          value={restaurant?.logradouro || ""}
-          onChange={handleChange}
+          value={formData.logradouro || ""}
+          onChange={handleInputChange}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -61,8 +53,8 @@ const StepNomeEndereco = () => {
           label="Número"
           name="numero"
           autoComplete="numero"
-          value={restaurant?.numero || ""}
-          onChange={handleChange}
+          value={formData.numero || ""}
+          onChange={handleInputChange}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -73,8 +65,8 @@ const StepNomeEndereco = () => {
           label="Bairro"
           name="bairro"
           autoComplete="bairro"
-          value={restaurant?.bairro || ""}
-          onChange={handleChange}
+          value={formData.bairro || ""}
+          onChange={handleInputChange}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -85,8 +77,8 @@ const StepNomeEndereco = () => {
           label="Cidade"
           name="cidade"
           autoComplete="cidade"
-          value={restaurant?.cidade || ""}
-          onChange={handleChange}
+          value={formData.cidade || ""}
+          onChange={handleInputChange}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -97,8 +89,8 @@ const StepNomeEndereco = () => {
           label="Estado"
           name="estado"
           autoComplete="estado"
-          value={restaurant?.estado || ""}
-          onChange={handleChange}
+          value={formData.estado || ""}
+          onChange={handleInputChange}
         />
       </Grid>
     </Grid>

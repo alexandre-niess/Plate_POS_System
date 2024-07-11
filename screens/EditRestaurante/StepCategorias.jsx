@@ -13,43 +13,33 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useContext } from "react";
-import { RestaurantContext } from "../../src/RestaurantContext";
 
-const StepCategorias = () => {
-  const { restaurant, setRestaurant, loading } = useContext(RestaurantContext);
+const StepCategorias = ({ formData, handleChange }) => {
   const [category, setCategory] = useState("");
-
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
 
   const handleAddCategory = () => {
     if (category.trim()) {
-      setRestaurant((prev) => ({
-        ...prev,
-        categorias: [...prev.categorias, category.trim()],
-      }));
+      handleChange({
+        categorias: [...(formData.categorias || []), category.trim()],
+      });
       setCategory("");
     }
   };
 
   const handleDeleteCategory = (index) => {
-    setRestaurant((prev) => ({
-      ...prev,
-      categorias: prev.categorias.filter((_, i) => i !== index),
-    }));
+    handleChange({
+      categorias: formData.categorias.filter((_, i) => i !== index),
+    });
   };
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
-    const updatedCategorias = Array.from(restaurant.categorias);
+    const updatedCategorias = Array.from(formData.categorias);
     const [movedItem] = updatedCategorias.splice(result.source.index, 1);
     updatedCategorias.splice(result.destination.index, 0, movedItem);
-    setRestaurant((prev) => ({
-      ...prev,
+    handleChange({
       categorias: updatedCategorias,
-    }));
+    });
   };
 
   return (
@@ -86,7 +76,7 @@ const StepCategorias = () => {
         <Droppable droppableId="categorias">
           {(provided) => (
             <List {...provided.droppableProps} ref={provided.innerRef}>
-              {restaurant.categorias.map((categoria, index) => (
+              {formData.categorias?.map((categoria, index) => (
                 <Draggable
                   key={categoria}
                   draggableId={categoria}

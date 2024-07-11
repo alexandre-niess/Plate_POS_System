@@ -9,8 +9,6 @@ import {
   Radio,
   Divider,
 } from "@mui/material";
-import { useContext } from "react";
-import { RestaurantContext } from "../../src/RestaurantContext";
 
 const diasSemana = [
   "domingo",
@@ -22,42 +20,63 @@ const diasSemana = [
   "sabado",
 ];
 
-const StepHorarios = () => {
-  const { restaurant, setRestaurant, loading } = useContext(RestaurantContext);
-
-  if (loading) {
-    return <div>Carregando...</div>;
+const parseHorario = (horarioStr) => {
+  if (horarioStr.includes("Fechado")) {
+    return { status: "fechado" };
   }
+
+  if (horarioStr.includes("24 horas")) {
+    return { status: "24Horas" };
+  }
+
+  const [dia, horario] = horarioStr.split(": ");
+  const [abertura, fechamento] = horario.split(" às ");
+  const [aberturaHora, aberturaMinuto] = abertura.split(":");
+  const [fechamentoHora, fechamentoMinuto] = fechamento.split(":");
+
+  return {
+    status: "aberto",
+    abertura: { hora: aberturaHora, minuto: aberturaMinuto },
+    fechamento: { hora: fechamentoHora, minuto: fechamentoMinuto },
+  };
+};
+
+const StepHorarios = ({ formData, handleChange }) => {
+  const horarios = diasSemana.reduce((acc, dia) => {
+    const horarioStr =
+      formData.horarios?.find((h) => h.startsWith(dia)) || `${dia}: Fechado`;
+    acc[dia] = parseHorario(horarioStr);
+    return acc;
+  }, {});
 
   const handleHorariosChange = (e, dia, type, period) => {
     const { value } = e.target;
-    setRestaurant((prev) => ({
-      ...prev,
-      horarios: {
-        ...prev.horarios,
-        [dia]: {
-          ...prev.horarios[dia],
-          [period]: {
-            ...prev.horarios[dia][period],
-            [type]: value,
-          },
-        },
-      },
-    }));
+    handleChange({
+      horarios: formData.horarios.map((h) =>
+        h.startsWith(dia)
+          ? `${dia}: ${
+              period === "abertura" ? value : horarios[dia].abertura.hora
+            }:${horarios[dia].abertura.minuto} às ${
+              period === "fechamento" ? value : horarios[dia].fechamento.hora
+            }:${horarios[dia].fechamento.minuto}`
+          : h
+      ),
+    });
   };
 
   const handleRadioChange = (e, dia) => {
     const { value } = e.target;
-    setRestaurant((prev) => ({
-      ...prev,
-      horarios: {
-        ...prev.horarios,
-        [dia]: {
-          ...prev.horarios[dia],
-          status: value,
-        },
-      },
-    }));
+    handleChange({
+      horarios: formData.horarios.map((h) =>
+        h.startsWith(dia)
+          ? value === "fechado"
+            ? `${dia}: Fechado`
+            : value === "24Horas"
+            ? `${dia}: 24 horas`
+            : `${dia}: ${horarios[dia].abertura.hora}:${horarios[dia].abertura.minuto} às ${horarios[dia].fechamento.hora}:${horarios[dia].fechamento.minuto}`
+          : h
+      ),
+    });
   };
 
   return (
@@ -121,13 +140,12 @@ const StepHorarios = () => {
                         id={`${dia}-hora-abertura`}
                         name={`${dia}-hora-abertura`}
                         autoComplete="off"
-                        value={
-                          restaurant?.horarios?.[dia]?.abertura?.hora || ""
-                        }
+                        value={horarios[dia]?.abertura?.hora || ""}
                         onChange={(e) =>
                           handleHorariosChange(e, dia, "hora", "abertura")
                         }
                         size="small"
+                        disabled={horarios[dia]?.status !== "aberto"}
                       />
                     </Grid>
                     <Grid item xs={2} align="center">
@@ -141,14 +159,13 @@ const StepHorarios = () => {
                         id={`${dia}-minuto-abertura`}
                         name={`${dia}-minuto-abertura`}
                         autoComplete="off"
-                        value={
-                          restaurant?.horarios?.[dia]?.abertura?.minuto || ""
-                        }
+                        value={horarios[dia]?.abertura?.minuto || ""}
                         onChange={(e) =>
                           handleHorariosChange(e, dia, "minuto", "abertura")
                         }
                         size="small"
                         inputProps={{ maxLength: 2 }}
+                        disabled={horarios[dia]?.status !== "aberto"}
                       />
                     </Grid>
                   </Grid>
@@ -183,13 +200,12 @@ const StepHorarios = () => {
                         id={`${dia}-hora-fechamento`}
                         name={`${dia}-hora-fechamento`}
                         autoComplete="off"
-                        value={
-                          restaurant?.horarios?.[dia]?.fechamento?.hora || ""
-                        }
+                        value={horarios[dia]?.fechamento?.hora || ""}
                         onChange={(e) =>
                           handleHorariosChange(e, dia, "hora", "fechamento")
                         }
                         size="small"
+                        disabled={horarios[dia]?.status !== "aberto"}
                       />
                     </Grid>
                     <Grid item xs={2} align="center">
@@ -203,14 +219,13 @@ const StepHorarios = () => {
                         id={`${dia}-minuto-fechamento`}
                         name={`${dia}-minuto-fechamento`}
                         autoComplete="off"
-                        value={
-                          restaurant?.horarios?.[dia]?.fechamento?.minuto || ""
-                        }
+                        value={horarios[dia]?.fechamento?.minuto || ""}
                         onChange={(e) =>
                           handleHorariosChange(e, dia, "minuto", "fechamento")
                         }
                         size="small"
                         inputProps={{ maxLength: 2 }}
+                        disabled={horarios[dia]?.status !== "aberto"}
                       />
                     </Grid>
                   </Grid>
@@ -219,7 +234,7 @@ const StepHorarios = () => {
               <Grid item xs={12} sm={12}>
                 <RadioGroup
                   row
-                  value={restaurant?.horarios?.[dia]?.status || "aberto"}
+                  value={horarios[dia]?.status || "aberto"}
                   onChange={(e) => handleRadioChange(e, dia)}
                 >
                   <FormControlLabel

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   Button,
@@ -9,7 +9,10 @@ import {
   Container,
   CssBaseline,
 } from "@mui/material";
-import { RestaurantProvider } from "../../src/RestaurantContext";
+import {
+  RestaurantProvider,
+  RestaurantContext,
+} from "../../src/RestaurantContext";
 import StepNomeEndereco from "./StepNomeEndereco";
 import StepPagamento from "./StepPagamento";
 import StepHorarios from "./StepHorarios";
@@ -25,6 +28,8 @@ const steps = [
 
 const EditRestaurant = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const { restaurant, updateRestaurant } = useContext(RestaurantContext);
+  const [formData, setFormData] = useState(restaurant || {});
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -36,6 +41,19 @@ const EditRestaurant = () => {
 
   const handleReset = () => {
     setActiveStep(0);
+    setFormData(restaurant || {});
+  };
+
+  const handleSave = () => {
+    updateRestaurant(formData); // Atualiza o restaurante no Firestore
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleChange = (stepData) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ...stepData,
+    }));
   };
 
   return (
@@ -59,7 +77,7 @@ const EditRestaurant = () => {
               </Box>
             ) : (
               <Box>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, formData, handleChange)}
                 <Box
                   sx={{
                     display: "flex",
@@ -73,7 +91,9 @@ const EditRestaurant = () => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleNext}
+                    onClick={
+                      activeStep === steps.length - 1 ? handleSave : handleNext
+                    }
                   >
                     {activeStep === steps.length - 1 ? "Concluir" : "Próximo"}
                   </Button>
@@ -87,16 +107,18 @@ const EditRestaurant = () => {
   );
 };
 
-const getStepContent = (step) => {
+const getStepContent = (step, formData, handleChange) => {
   switch (step) {
     case 0:
-      return <StepNomeEndereco />;
+      return (
+        <StepNomeEndereco formData={formData} handleChange={handleChange} />
+      );
     case 1:
-      return <StepPagamento />;
+      return <StepPagamento formData={formData} handleChange={handleChange} />;
     case 2:
-      return <StepHorarios />;
+      return <StepHorarios formData={formData} handleChange={handleChange} />;
     case 3:
-      return <StepCategorias />;
+      return <StepCategorias formData={formData} handleChange={handleChange} />;
     default:
       return "Passo desconhecido";
   }

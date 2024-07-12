@@ -57,37 +57,42 @@ export function Admin() {
   return (
     <>
       <Header headerType="admin" />
-      <Box
-        sx={{
-          backgroundColor: "#D8E0E0",
-          display: "flex",
-          flexDirection: { xs: "column", md: "row" },
-          justifyContent: "space-between",
-          alignItems: "center",
 
-          marginTop: "100px",
-          padding: "1.5%",
-          borderRadius: "8px",
-        }}
-      >
-        <Typography component="h1" sx={{ fontSize: "18px", fontWeight: "600" }}>
-          Informações do Restaurante
-        </Typography>
-        <Link to="/AppRestaurante/editar-restaurante">
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: { xs: "20px", md: "0" } }}
-          >
-            Editar informações
-          </Button>
-        </Link>
-      </Box>
       <Box
         sx={{
           margin: "1%",
         }}
       >
+        <Box
+          sx={{
+            backgroundColor: "#D8E0E0",
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "1%",
+            marginTop: "100px",
+            padding: "1.5%",
+            borderRadius: "8px",
+          }}
+        >
+          <Typography
+            component="h1"
+            sx={{ fontSize: "18px", fontWeight: "600" }}
+          >
+            Informações do Restaurante
+          </Typography>
+          <Link to="/AppRestaurante/editar-restaurante">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ marginTop: { xs: "20px", md: "0" } }}
+            >
+              Editar informações
+            </Button>
+          </Link>
+        </Box>
+        {/* 
         <Box>
           <Box
             sx={{
@@ -100,7 +105,7 @@ export function Admin() {
             <CardAdmin />
           </Box>
         </Box>
-
+*/}
         <TabelaProdutos />
       </Box>
     </>

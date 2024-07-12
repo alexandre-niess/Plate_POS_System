@@ -57,49 +57,52 @@ export function Admin() {
   return (
     <>
       <Header headerType="admin" />
-      <Box sx={{ margin: "1%" }}>
-        <Box
-          sx={{
-            backgroundColor: "#D8E0E0",
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            justifyContent: "space-between",
-            alignItems: "center",
+      <Box
+        sx={{
+          backgroundColor: "#D8E0E0",
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "space-between",
+          alignItems: "center",
 
-            marginTop: "140px",
-            padding: "1.5%",
-            borderRadius: "8px",
-          }}
-        >
-          <Typography
-            component="h1"
-            sx={{ fontSize: "18px", fontWeight: "600" }}
+          marginTop: "100px",
+          padding: "1.5%",
+          borderRadius: "8px",
+        }}
+      >
+        <Typography component="h1" sx={{ fontSize: "18px", fontWeight: "600" }}>
+          Informações do Restaurante
+        </Typography>
+        <Link to="/AppRestaurante/editar-restaurante">
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ marginTop: { xs: "20px", md: "0" } }}
           >
-            Informações do Restaurante
-          </Typography>
-          <Link to="/AppRestaurante/editar-restaurante">
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ marginTop: { xs: "20px", md: "0" } }}
-            >
-              Editar informações
-            </Button>
-          </Link>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            marginTop: "1%",
-          }}
-        >
-          <CardAdmin />
-        </Box>
+            Editar informações
+          </Button>
+        </Link>
       </Box>
+      <Box
+        sx={{
+          margin: "1%",
+        }}
+      >
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginBottom: "100px",
+            }}
+          >
+            <CardAdmin />
+          </Box>
+        </Box>
 
-      {/* <TabelaProdutos />*/}
+        <TabelaProdutos />
+      </Box>
     </>
   );
 }

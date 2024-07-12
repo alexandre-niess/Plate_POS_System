@@ -13,7 +13,6 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { visuallyHidden } from "@mui/utils";
@@ -72,7 +71,7 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-  const { order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -80,21 +79,13 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            inputProps={{ "aria-label": "select all desserts" }}
-            style={{ visibility: "hidden" }} // Hide select all checkbox
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={headCell.id === "nome" ? { pl: 2 } : null} // Add padding-left to the first column
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -117,21 +108,14 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
 };
 
 function EnhancedTableToolbar(props) {
-  const {
-    numSelected,
-    searchTerm,
-    setSearchTerm,
-    selectedFilter,
-    setSelectedFilter,
-  } = props;
+  const { searchTerm, setSearchTerm, selectedFilter, setSelectedFilter } =
+    props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -177,106 +161,84 @@ function EnhancedTableToolbar(props) {
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
       }}
     >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          width: "100%",
+          alignContent: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
+            gap: "40px",
           }}
         >
           <Typography variant="h6" id="tableTitle" component="div">
-            Pratos
+            Produtos
           </Typography>
-          <Box></Box>
           <Link
             to="/AppRestaurante/cad-prato"
             style={{ textDecoration: "none" }}
           >
             <Button variant="contained">Adicionar produto</Button>
           </Link>
-          <FormControl sx={{ m: 1, width: "30%" }} variant="filled">
-            <InputLabel htmlFor="filled-adornment-search">
-              {getPlaceholder()}
-            </InputLabel>
-
-            <FilledInput
-              id="filled-adornment-search"
-              type="text"
-              value={searchTerm}
-              onChange={handleChangeSearch}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="filter options"
-                    onClick={searchTerm ? handleClearSearch : handleClick}
-                    edge="end"
-                  >
-                    {searchTerm ? (
-                      <ClearIcon sx={{ zIndex: "200" }} />
-                    ) : (
-                      <Filter sx={{ zIndex: "200" }} />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            MenuListProps={{ "aria-labelledby": "basic-button" }}
-          >
-            <MenuItem onClick={() => handleMenuItemClick("Nome")}>
-              Nome
-            </MenuItem>
-            <MenuItem onClick={() => handleMenuItemClick("Descrição")}>
-              Descrição
-            </MenuItem>
-            <MenuItem onClick={() => handleMenuItemClick("Alérgenos")}>
-              Alérgenos
-            </MenuItem>
-            <MenuItem onClick={() => handleMenuItemClick("Preço")}>
-              Preço
-            </MenuItem>
-          </Menu>
         </Box>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Edit">
-          <IconButton>
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-      ) : null}
+        <FormControl sx={{ width: "30%" }} variant="filled">
+          <InputLabel htmlFor="filled-adornment-search">
+            {getPlaceholder()}
+          </InputLabel>
+          <FilledInput
+            id="filled-adornment-search"
+            type="text"
+            value={searchTerm}
+            onChange={handleChangeSearch}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="filter options"
+                  onClick={searchTerm ? handleClearSearch : handleClick}
+                  edge="end"
+                >
+                  {searchTerm ? (
+                    <ClearIcon sx={{ zIndex: "200" }} />
+                  ) : (
+                    <Filter sx={{ zIndex: "200" }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{ "aria-labelledby": "basic-button" }}
+        >
+          <MenuItem onClick={() => handleMenuItemClick("Nome")}>Nome</MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick("Descrição")}>
+            Descrição
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick("Alérgenos")}>
+            Alérgenos
+          </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick("Preço")}>
+            Preço
+          </MenuItem>
+        </Menu>
+      </Box>
     </Toolbar>
   );
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   searchTerm: PropTypes.string.isRequired,
   setSearchTerm: PropTypes.func.isRequired,
   selectedFilter: PropTypes.string.isRequired,
@@ -287,7 +249,6 @@ export function TabelaProdutos() {
   const { pratos, loading } = usePratos();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("nome");
-  const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -300,17 +261,6 @@ export function TabelaProdutos() {
     setOrderBy(property);
   };
 
-  const handleClick = (event, nome) => {
-    const selectedIndex = selected.indexOf(nome);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = [nome]; // Only allow one selection
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -319,8 +269,6 @@ export function TabelaProdutos() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  const isSelected = (nome) => selected.indexOf(nome) !== -1;
 
   const handleEditClick = (id) => {
     navigate(`/AppRestaurante/edit-prato/${id}`);
@@ -360,7 +308,6 @@ export function TabelaProdutos() {
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
-          numSelected={selected.length}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           selectedFilter={selectedFilter}
@@ -369,58 +316,40 @@ export function TabelaProdutos() {
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
-              numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               rowCount={pratos.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.nome);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.nome)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id} // Use the ID of the row
-                    selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}
+              {visibleRows.map((row, index) => (
+                <TableRow
+                  hover
+                  tabIndex={-1}
+                  key={row.id} // Use the ID of the row
+                  sx={{ cursor: "pointer" }}
+                >
+                  <TableCell
+                    component="th"
+                    id={`enhanced-table-checkbox-${index}`}
+                    scope="row"
+                    padding="none"
+                    sx={{ pl: 2 }} // Add padding-left to the first cell
                   >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{ "aria-labelledby": labelId }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.nome}
-                    </TableCell>
-                    <TableCell align="left">{row.descricao}</TableCell>
-                    <TableCell align="left">{row.alergenicos}</TableCell>
-                    <TableCell align="right">{row.preco}</TableCell>
-                    <TableCell align="center">
-                      <Tooltip title="Editar">
-                        <IconButton
-                          onClick={() => handleEditClick(row.id)} // Assumindo que cada linha tenha um ID único
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                    {row.nome}
+                  </TableCell>
+                  <TableCell align="left">{row.descricao}</TableCell>
+                  <TableCell align="left">{row.alergenicos}</TableCell>
+                  <TableCell align="right">{row.preco}</TableCell>
+                  <TableCell align="center">
+                    <Tooltip title="Editar">
+                      <IconButton onClick={() => handleEditClick(row.id)}>
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
               {emptyRows > 0 && (
                 <TableRow>
                   <TableCell colSpan={6} />
@@ -437,6 +366,10 @@ export function TabelaProdutos() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelDisplayedRows={({ from, to, count }) =>
+            `${from}-${to} de ${count !== -1 ? count : `mais de ${to}`}`
+          }
+          labelRowsPerPage="Linhas por página" // Translate "rows per page" to "Linhas por página"
         />
       </Paper>
     </Box>

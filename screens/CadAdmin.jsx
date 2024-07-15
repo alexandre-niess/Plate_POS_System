@@ -61,9 +61,9 @@ export function CadAdmin() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <CssBaseline />
-      <Header headerType="home" />
+      <Header headerType="cad-admin" />
       <Box
         sx={{
           display: "flex",
@@ -82,7 +82,7 @@ export function CadAdmin() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: 1, bgcolor: "text.secondary" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -155,7 +155,7 @@ export function CadAdmin() {
           </Box>
         </Container>
       </Box>
-    </ThemeProvider>
+    </>
   );
 }
 

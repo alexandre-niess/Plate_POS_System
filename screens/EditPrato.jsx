@@ -46,7 +46,7 @@ export function EditPrato() {
   const [categoria, setCategoria] = useState("");
   const [preco, setPreco] = useState("");
   const [imagem, setImagem] = useState(null);
-  const [imagemNome, setImagemNome] = useState(""); // Para armazenar o nome do arquivo de imagem
+  const [imagemURL, setImagemURL] = useState(""); // Para armazenar a URL da imagem
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [errors, setErrors] = useState({
@@ -69,7 +69,7 @@ export function EditPrato() {
           setCategoria(pratoData.categoria);
           setPreco(pratoData.preco);
           setSelectedAlergenicos(pratoData.alergenicos.split(","));
-          setImagemNome(pratoData.imagemPrato); // Just the URL, not the file name
+          setImagemURL(pratoData.imagemPrato); // Set the URL of the image
         }
       }
     };
@@ -91,11 +91,9 @@ export function EditPrato() {
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
     if (file && allowedTypes.includes(file.type)) {
       setImagem(file);
-      setImagemNome(file.name); // Armazena o nome do arquivo de imagem
       setErrors((prev) => ({ ...prev, imagem: false }));
     } else {
       setImagem(null);
-      setImagemNome("");
       setErrors((prev) => ({ ...prev, imagem: true }));
       alert(
         "Por favor, selecione um arquivo de imagem válido (jpeg, png, gif)."
@@ -109,7 +107,7 @@ export function EditPrato() {
       descricao: !descricao,
       categoria: !categoria,
       preco: !preco,
-      imagem: !imagem && !imagemNome, // imagem is optional if imagemNome exists
+      imagem: !imagem && !imagemURL, // imagem is optional if imagemURL exists
     };
     setErrors(newErrors);
     return !Object.values(newErrors).some(Boolean);
@@ -128,13 +126,13 @@ export function EditPrato() {
     setIsSubmitting(true);
 
     try {
-      let imagemURL = imagemNome;
+      let updatedImagemURL = imagemURL;
 
       if (imagem) {
         // Upload da nova imagem para o Firebase Storage
         const storageRef = ref(storage, `images/${imagem.name}`);
         await uploadBytes(storageRef, imagem);
-        imagemURL = await getDownloadURL(storageRef);
+        updatedImagemURL = await getDownloadURL(storageRef);
       }
 
       // Converte os alergenicos selecionados para uma string separada por vírgulas
@@ -147,10 +145,11 @@ export function EditPrato() {
         categoria,
         preco,
         alergenicos: alergenicosString,
-        imagemPrato: imagemURL,
+        imagemPrato: updatedImagemURL,
       });
 
       alert("Prato atualizado com sucesso!");
+      setImagemURL(updatedImagemURL); // Atualiza a URL da imagem exibida
     } catch (error) {
       console.error("Erro ao atualizar o prato: ", error);
       alert("Erro ao atualizar o prato. Tente novamente.");
@@ -182,11 +181,9 @@ export function EditPrato() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "text.details" }}>
-            <AddIcon />
-          </Avatar>
+          <Avatar sx={{ width: 100, height: 100, m: 1 }} src={imagemURL} />
           <Typography component="h1" variant="h5">
-            Edição de Prato
+            Edição de Produto
           </Typography>
           <Box
             component="form"
@@ -287,7 +284,7 @@ export function EditPrato() {
               sx={{ mt: 3, mb: 2 }}
             >
               <Box sx={{ display: "flex", gap: "10px" }}>
-                Upload Imagem
+                Trocar Imagem
                 <CloudUploadIcon />
               </Box>
               <input
@@ -297,11 +294,6 @@ export function EditPrato() {
                 accept="image/jpeg,image/png,image/gif"
               />
             </Button>
-            {imagemNome && (
-              <Typography variant="body2" sx={{ mt: 1 }}>
-                Arquivo selecionado: {imagemNome}
-              </Typography>
-            )}
             {errors.imagem && (
               <Typography color="error" variant="caption">
                 Imagem é obrigatória

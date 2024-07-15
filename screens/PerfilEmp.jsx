@@ -15,7 +15,7 @@ export function PerfilEmp() {
     return (
       <>
         <CssBaseline />
-        <Header headerType="home" />
+        <Header headerType="dadosRest" />
         <Box sx={{ marginTop: "74px", textAlign: "center" }}>
           <Typography component="h1" variant="h6" color="text.primary">
             Carregando...
@@ -29,7 +29,7 @@ export function PerfilEmp() {
     return (
       <>
         <CssBaseline />
-        <Header headerType="home" />
+        <Header headerType="dadosRest" />
         <Box sx={{ marginTop: "74px", textAlign: "center" }}>
           <Typography component="h1" variant="h6" color="text.primary">
             Dados do restaurante não encontrados.

@@ -33,7 +33,7 @@ const isOpenNow = (horarios) => {
   const currentMinute = now.getMinutes();
 
   const horarioHoje = horarios.find((h) => h.startsWith(currentDay));
-
+  console.log(horarioHoje);
   if (!horarioHoje || horarioHoje.includes("Fechado")) {
     return { aberto: false };
   }

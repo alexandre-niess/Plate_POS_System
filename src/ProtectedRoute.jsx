@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!user) {
-    return <Navigate to="/AppRestaurante/login" />;
+    return <Navigate to="/login" />;
   }
 
   return children;

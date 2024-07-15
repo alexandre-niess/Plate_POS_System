@@ -14,14 +14,43 @@ import { RestaurantProvider } from "./RestaurantContext.jsx"; // Importe o provi
 import { PratoProvider } from "./PratoContext.jsx";
 import EditRestaurante from "../screens/EditRestaurante/EditRestaurante.jsx";
 import EditPrato from "../screens/EditPrato.jsx";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const temaRest = createTheme({
+  palette: {
+    primary: {
+      main: "#2A3A44", // cor primaria
+    },
+    background: {
+      default: "#fff",
+      secondary: "#f5f5f5",
+      cinza: "#CFCFCF",
+    },
+    text: {
+      primary: "#333333",
+      secondary: "#8C8C8C",
+      white: "#fff",
+      details: "#8C8C8C",
+    },
+    decorations: {
+      divider: "#DCDCDC",
+    },
+  },
+  shape: {
+    borderRadius: 5,
+  },
+  typography: {
+    fontFamily: "Lexend, sans-serif",
+  },
+});
 
 createRoot(document.getElementById("root")).render(
-  <RestaurantProvider>
-    <PratoProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/AppRestaurante" element={<App />}>
-            <Route index element={<Home />} />
+  <ThemeProvider theme={temaRest}>
+    <RestaurantProvider>
+      <PratoProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="perfil-da-loja" element={<PerfilEmp />} />
             <Route path="login" element={<Login />} />
             <Route path="cadastro-admin" element={<CadAdmin />} />
@@ -66,9 +95,9 @@ createRoot(document.getElementById("root")).render(
               }
             />
             <Route path="*" element={<h1>Not Found</h1>} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </PratoProvider>
-  </RestaurantProvider>
+          </Routes>
+        </BrowserRouter>
+      </PratoProvider>
+    </RestaurantProvider>
+  </ThemeProvider>
 );

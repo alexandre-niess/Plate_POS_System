@@ -28,7 +28,7 @@ export function Login() {
     const auth = getAuth();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/AppRestaurante/admin"); // Redireciona para a rota protegida após login bem-sucedido
+      navigate("/admin"); // Redireciona para a rota protegida após login bem-sucedido
     } catch (error) {
       setError(error.message);
     }

@@ -46,7 +46,7 @@ export function Admin() {
           >
             Ops, parece que não tem nenhum restaurante aqui...
           </Typography>
-          <Link to="/AppRestaurante/cadastro-restaurante">
+          <Link to="/cadastro-restaurante">
             <Button variant="contained">Cadastrar Restaurante</Button>
           </Link>
         </Box>
@@ -82,7 +82,7 @@ export function Admin() {
           >
             Informações do Restaurante
           </Typography>
-          <Link to="/AppRestaurante/editar-restaurante">
+          <Link to="/editar-restaurante">
             <Button
               variant="contained"
               color="primary"

@@ -218,8 +218,8 @@ export function Home() {
           "::-webkit-scrollbar": {
             display: "none",
           },
-          "-ms-overflow-style": "none",
-          "scrollbar-width": "none",
+          msOverflowStyle: "none",
+          scrollbarWidth: "none",
         }}
       >
         {!searchQuery || filteredPratos.length > 0

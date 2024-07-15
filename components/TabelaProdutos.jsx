@@ -182,10 +182,7 @@ function EnhancedTableToolbar(props) {
           <Typography variant="h6" id="tableTitle" component="div">
             Produtos
           </Typography>
-          <Link
-            to="/AppRestaurante/cad-prato"
-            style={{ textDecoration: "none" }}
-          >
+          <Link to="/cad-prato" style={{ textDecoration: "none" }}>
             <Button variant="contained">Adicionar produto</Button>
           </Link>
         </Box>

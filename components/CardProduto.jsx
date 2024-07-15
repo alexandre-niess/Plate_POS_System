@@ -6,27 +6,33 @@ import Card from "@mui/material/Card";
 const alergenicosGlobais = [
   {
     nome: "Açúcar",
-    imagem: "../public/acucar.png",
+    imagem:
+      "https://firebasestorage.googleapis.com/v0/b/siterestaurante-38459.appspot.com/o/alergenos%2Facucar.png?alt=media&token=8c5c019c-c207-4389-911d-3117c1226c41",
   },
   {
     nome: "Glúten",
-    imagem: "../public/gluten.png",
+    imagem:
+      "https://firebasestorage.googleapis.com/v0/b/siterestaurante-38459.appspot.com/o/alergenos%2Fgluten.png?alt=media&token=b12f8558-efa5-42d3-953d-b2e17f9bc69b",
   },
   {
     nome: "Lactose",
-    imagem: "../public/lactose.png",
+    imagem:
+      "https://firebasestorage.googleapis.com/v0/b/siterestaurante-38459.appspot.com/o/alergenos%2Flactose.png?alt=media&token=bc515dd5-6617-4668-956a-955bb22593c0",
   },
   {
     nome: "Vegetariano",
-    imagem: "../public/vegetariano.png",
+    imagem:
+      "https://firebasestorage.googleapis.com/v0/b/siterestaurante-38459.appspot.com/o/alergenos%2Fvegetariano.png?alt=media&token=ed5d2754-efae-4153-98e6-62c9341c42a3",
   },
   {
     nome: "Ovo",
-    imagem: "../public/ovo.png",
+    imagem:
+      "https://firebasestorage.googleapis.com/v0/b/siterestaurante-38459.appspot.com/o/alergenos%2Fovo.png?alt=media&token=69224c40-2705-4be3-9d20-1669875ce064",
   },
   {
     nome: "Soja",
-    imagem: "../public/soja.png",
+    imagem:
+      "https://firebasestorage.googleapis.com/v0/b/siterestaurante-38459.appspot.com/o/alergenos%2Fsoja.png?alt=media&token=4ca8557a-d964-4ce5-9851-8c5d0f04b8a4",
   },
 ];
 

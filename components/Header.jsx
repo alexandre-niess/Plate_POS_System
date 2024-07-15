@@ -8,6 +8,7 @@ import { Avatar } from "@mui/material"; // Importar Avatar para exibir a foto de
 import { useContext } from "react";
 import { RestaurantContext } from "../src/RestaurantContext"; // Importe o contexto de restaurante
 import Button from "@mui/material/Button";
+import Loading from "./Loading";
 
 function Header({ headerType }) {
   const { restaurant, loading } = useContext(RestaurantContext); // Use o contexto do restaurante
@@ -105,9 +106,11 @@ function Header({ headerType }) {
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <IconButton>
-            <ArrowBackIosIcon sx={{ color: "text.white" }} />
-          </IconButton>
+          <Link to="/admin">
+            <IconButton>
+              <ArrowBackIosIcon sx={{ color: "text.white" }} />
+            </IconButton>
+          </Link>
 
           <Typography
             component="h1"
@@ -149,58 +152,6 @@ function Header({ headerType }) {
         </Box>
       );
     } else if (headerType === "login") {
-      if (loading) {
-        return (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              height: 64,
-              padding: 1,
-              backgroundColor: "primary.main",
-              width: "100%",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <Typography
-              component="h1"
-              align="left"
-              color="text.white"
-              sx={{ marginLeft: 1 }}
-            >
-              Carregando...
-            </Typography>
-          </Box>
-        );
-      }
-
-      if (!restaurant) {
-        return (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              height: 64,
-              padding: 1,
-              backgroundColor: "primary.main",
-              width: "100%",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <Typography
-              component="h1"
-              align="left"
-              color="text.white"
-              sx={{ marginLeft: 1 }}
-            >
-              Dados do restaurante não encontrados
-            </Typography>
-          </Box>
-        );
-      }
-
       return (
         <Box
           sx={{
@@ -214,74 +165,17 @@ function Header({ headerType }) {
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <Link to="/">
-            <IconButton>
-              <Avatar src={restaurant.imagemURL} alt="Logo do restaurante" />
-            </IconButton>
-          </Link>
           <Typography
             component="h1"
             align="left"
             color="text.white"
             sx={{ marginLeft: 1 }}
           >
-            {restaurant.nome}
+            Login
           </Typography>
         </Box>
       );
-    } else if (headerType === "login") {
-      if (loading) {
-        return (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              height: 64,
-              padding: 1,
-              backgroundColor: "primary.main",
-              width: "100%",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <Typography
-              component="h1"
-              align="left"
-              color="text.white"
-              sx={{ marginLeft: 1 }}
-            >
-              Carregando...
-            </Typography>
-          </Box>
-        );
-      }
-
-      if (!restaurant) {
-        return (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "left",
-              alignItems: "center",
-              height: 64,
-              padding: 1,
-              backgroundColor: "primary.main",
-              width: "100%",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <Typography
-              component="h1"
-              align="left"
-              color="text.white"
-              sx={{ marginLeft: 1 }}
-            >
-              Dados do restaurante não encontrados
-            </Typography>
-          </Box>
-        );
-      }
-
+    } else if (headerType === "cad-admin") {
       return (
         <Box
           sx={{
@@ -295,18 +189,13 @@ function Header({ headerType }) {
             boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <Link to="/">
-            <IconButton>
-              <Avatar src={restaurant.imagemURL} alt="Logo do restaurante" />
-            </IconButton>
-          </Link>
           <Typography
             component="h1"
             align="left"
             color="text.white"
             sx={{ marginLeft: 1 }}
           >
-            {restaurant.nome}
+            Cadastro Administrador
           </Typography>
         </Box>
       );
@@ -331,7 +220,7 @@ function Header({ headerType }) {
               color="text.white"
               sx={{ marginLeft: 1 }}
             >
-              Carregando...
+              <Loading />
             </Typography>
           </Box>
         );

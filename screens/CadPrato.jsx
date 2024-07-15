@@ -27,6 +27,7 @@ import {
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../src/firebaseConfig";
 import { RestaurantContext } from "../src/RestaurantContext"; // Import the context
+import Loading from "../components/Loading";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -157,13 +158,7 @@ export function CadPrato() {
   };
 
   if (loading) {
-    return (
-      <Box sx={{ padding: 2, textAlign: "center" }}>
-        <Typography variant="h6" component="p">
-          Carregando...
-        </Typography>
-      </Box>
-    );
+    return <Loading />;
   }
 
   return (
@@ -179,7 +174,7 @@ export function CadPrato() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "text.details" }}>
+          <Avatar sx={{ m: 1, bgcolor: "text.secondary" }}>
             <AddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">

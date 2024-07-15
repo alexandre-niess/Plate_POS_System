@@ -7,12 +7,13 @@ import Button from "@mui/material/Button";
 import CardAdmin from "../components/CardAdmin"; // Importe o componente CardAdmin
 import Typography from "@mui/material/Typography";
 import { TabelaProdutos } from "../components/TabelaProdutos";
+import Loading from "../components/Loading";
 
 export function Admin() {
   const { restaurant, loading } = useContext(RestaurantContext);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   console.log(restaurant);

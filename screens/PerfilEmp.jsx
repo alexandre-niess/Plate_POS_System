@@ -7,6 +7,7 @@ import { Avatar } from "@mui/material";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import { RestaurantContext } from "../src/RestaurantContext"; // Importe o contexto de restaurante
+import Loading from "../components/Loading";
 
 export function PerfilEmp() {
   const { restaurant, loading } = useContext(RestaurantContext);
@@ -16,11 +17,7 @@ export function PerfilEmp() {
       <>
         <CssBaseline />
         <Header headerType="dadosRest" />
-        <Box sx={{ marginTop: "74px", textAlign: "center" }}>
-          <Typography component="h1" variant="h6" color="text.primary">
-            Carregando...
-          </Typography>
-        </Box>
+        <Loading />
       </>
     );
   }

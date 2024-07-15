@@ -30,6 +30,7 @@ import Filter from "@mui/icons-material/FilterList";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "./Loading";
 
 const headCells = [
   { id: "nome", numeric: false, disablePadding: true, label: "Nome" },
@@ -268,11 +269,11 @@ export function TabelaProdutos() {
   };
 
   const handleEditClick = (id) => {
-    navigate(`/AppRestaurante/edit-prato/${id}`);
+    navigate(`/edit-prato/${id}`);
   };
 
   if (loading) {
-    return <Typography>Carregando...</Typography>;
+    return <Loading />;
   }
 
   const emptyRows =

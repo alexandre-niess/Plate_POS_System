@@ -5,12 +5,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import { RestaurantContext } from "../src/RestaurantContext"; // Ajuste o caminho conforme necessário
+import Loading from "./Loading";
 
 const CardAdmin = () => {
   const { restaurant, loading } = useContext(RestaurantContext);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!restaurant) {

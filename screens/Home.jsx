@@ -16,6 +16,7 @@ import Footer from "../components/Footer";
 import { usePratos } from "../src/PratoContext";
 import { RestaurantContext } from "../src/RestaurantContext";
 import IsOpen from "/components/IsOpen.jsx";
+import Loading from "../components/Loading";
 
 export function Home() {
   const { pratos, loading: pratosLoading } = usePratos();
@@ -110,13 +111,7 @@ export function Home() {
   }, [restaurant, searchQuery, filteredPratos]);
 
   if (restaurantLoading) {
-    return (
-      <Box sx={{ padding: 2, textAlign: "center" }}>
-        <Typography variant="h6" component="p">
-          Carregando...
-        </Typography>
-      </Box>
-    );
+    return <Loading />;
   }
 
   return (
@@ -180,9 +175,7 @@ export function Home() {
                 }}
               >
                 {restaurantLoading ? (
-                  <Typography component="h1" align="left" color="text.white">
-                    Carregando...
-                  </Typography>
+                  <Loading />
                 ) : (
                   <>
                     <Avatar
@@ -255,13 +248,9 @@ export function Home() {
           : null}
       </Box>
 
-      <Container sx={{ paddingTop: "180px", paddingBottom: "16px" }}>
+      <Container sx={{ paddingTop: "180px", paddingBottom: "100px" }}>
         {pratosLoading ? (
-          <Box sx={{ padding: 2, textAlign: "center" }}>
-            <Typography variant="h6" component="p">
-              Carregando...
-            </Typography>
-          </Box>
+          <Loading />
         ) : filteredPratos.length === 0 ? (
           <Box sx={{ padding: 2, textAlign: "center" }}>
             <Typography variant="h6" component="p">

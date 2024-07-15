@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Loading from "../components/Loading";
 
 const ProtectedRoute = ({ children }) => {
   const auth = getAuth();
@@ -17,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
   }, [auth]);
 
   if (loading) {
-    return <div>Loading...</div>; // ou um componente de carregamento
+    return <Loading />; // ou um componente de carregamento
   }
 
   if (!user) {

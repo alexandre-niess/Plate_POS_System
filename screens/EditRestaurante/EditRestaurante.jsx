@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Box,
   Button,
@@ -9,10 +9,7 @@ import {
   Container,
   CssBaseline,
 } from "@mui/material";
-import {
-  RestaurantProvider,
-  RestaurantContext,
-} from "../../src/RestaurantContext";
+import { AdminRestaurantContext } from "../../src/AdminRestaurantContext";
 import StepNomeEndereco from "./StepNomeEndereco";
 import StepPagamento from "./StepPagamento";
 import StepHorarios from "./StepHorarios";
@@ -28,8 +25,14 @@ const steps = [
 
 const EditRestaurant = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const { restaurant, updateRestaurant } = useContext(RestaurantContext);
+  const { restaurant, updateRestaurant } = useContext(AdminRestaurantContext);
   const [formData, setFormData] = useState(restaurant || {});
+
+  useEffect(() => {
+    if (restaurant) {
+      setFormData(restaurant);
+    }
+  }, [restaurant]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -57,7 +60,7 @@ const EditRestaurant = () => {
   };
 
   return (
-    <RestaurantProvider>
+    <>
       <CssBaseline />
       <Header headerType="login" />
       <Container>
@@ -103,7 +106,7 @@ const EditRestaurant = () => {
           </Box>
         </Box>
       </Container>
-    </RestaurantProvider>
+    </>
   );
 };
 

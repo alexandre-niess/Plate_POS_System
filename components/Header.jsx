@@ -3,15 +3,17 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { IconButton } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { Link } from "react-browser-router";
+import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material"; // Importar Avatar para exibir a foto de perfil
 import { useContext } from "react";
 import { RestaurantContext } from "../src/RestaurantContext"; // Importe o contexto de restaurante
+import { AdminRestaurantContext } from "../src/AdminRestaurantContext"; // Importe o contexto do admin
 import Button from "@mui/material/Button";
 import Loading from "./Loading";
 
 function Header({ headerType }) {
-  const { restaurant, loading } = useContext(RestaurantContext); // Use o contexto do restaurante
+  const restaurantContext = useContext(RestaurantContext);
+  const adminRestaurantContext = useContext(AdminRestaurantContext);
 
   const renderHeader = () => {
     if (headerType === "cad-restaurante") {
@@ -200,6 +202,8 @@ function Header({ headerType }) {
         </Box>
       );
     } else if (headerType === "admin") {
+      const { restaurant, loading } = adminRestaurantContext;
+
       if (loading) {
         return (
           <Box

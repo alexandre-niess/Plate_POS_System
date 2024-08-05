@@ -41,6 +41,12 @@ const headCells = [
     label: "Descrição",
   },
   {
+    id: "categoria",
+    numeric: false,
+    disablePadding: false,
+    label: "Categoria",
+  }, // Categoria depois da descrição
+  {
     id: "alergenicos",
     numeric: false,
     disablePadding: false,
@@ -143,6 +149,8 @@ function EnhancedTableToolbar(props) {
         return "Pesquisar pelos Alérgenos";
       case "Preço":
         return "Pesquisar pelo Preço";
+      case "Categoria":
+        return "Pesquisar pela Categoria";
       default:
         return "Pesquisar";
     }
@@ -230,6 +238,10 @@ function EnhancedTableToolbar(props) {
           <MenuItem onClick={() => handleMenuItemClick("Preço")}>
             Preço
           </MenuItem>
+          <MenuItem onClick={() => handleMenuItemClick("Categoria")}>
+            Categoria
+          </MenuItem>{" "}
+          {/* Novo item */}
         </Menu>
       </Box>
     </Toolbar>
@@ -292,6 +304,8 @@ export function TabelaProdutos() {
             .includes(searchTerm.toLowerCase());
         case "Preço":
           return row.preco.toString().includes(searchTerm);
+        case "Categoria":
+          return row.categoria.toLowerCase().includes(searchTerm.toLowerCase());
         default:
           return true;
       }
@@ -337,6 +351,8 @@ export function TabelaProdutos() {
                     {row.nome}
                   </TableCell>
                   <TableCell align="left">{row.descricao}</TableCell>
+                  <TableCell align="left">{row.categoria}</TableCell>{" "}
+                  {/* Categoria depois da descrição */}
                   <TableCell align="left">{row.alergenicos}</TableCell>
                   <TableCell align="right">{row.preco}</TableCell>
                   <TableCell align="center">

@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -10,7 +11,15 @@ import { RestaurantContext } from "../src/RestaurantContext"; // Importe o conte
 import Loading from "../components/Loading";
 
 export function PerfilEmp() {
-  const { restaurant, loading } = useContext(RestaurantContext);
+  const { restaurantName } = useParams();
+  const { restaurant, loading, fetchRestaurantByName } =
+    useContext(RestaurantContext);
+
+  useEffect(() => {
+    if (restaurantName && (!restaurant || restaurant.nome !== restaurantName)) {
+      fetchRestaurantByName(restaurantName);
+    }
+  }, [restaurantName, restaurant, fetchRestaurantByName]);
 
   if (loading) {
     return (
@@ -52,7 +61,6 @@ export function PerfilEmp() {
     cep = "",
   } = restaurant;
 
-  console.log(restaurant);
   return (
     <>
       <CssBaseline />
@@ -104,7 +112,7 @@ export function PerfilEmp() {
               </Typography>
             </Box>
           )}
-          {pagamentoCartao && cartoes.length > 0 && (
+          {pagamentoCartao && Array.isArray(cartoes) && cartoes.length > 0 && (
             <Box sx={{ display: "flex", gap: "10px", alignItems: "center" }}>
               <CreditCardIcon />
               <Typography
@@ -121,7 +129,7 @@ export function PerfilEmp() {
                 color="text.details"
                 sx={{ fontSize: "12px" }}
               >
-                {cartoes}
+                {cartoes.join(", ")}
               </Typography>
             </Box>
           )}

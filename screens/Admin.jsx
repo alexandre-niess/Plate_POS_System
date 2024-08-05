@@ -2,21 +2,19 @@ import React, { useContext } from "react";
 import Header from "../components/Header";
 import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
-import { RestaurantContext } from "../src/RestaurantContext"; // Ajuste o caminho conforme necessário
+import { AdminRestaurantContext } from "../src/AdminRestaurantContext"; // Novo contexto
 import Button from "@mui/material/Button";
-import CardAdmin from "../components/CardAdmin"; // Importe o componente CardAdmin
 import Typography from "@mui/material/Typography";
 import { TabelaProdutos } from "../components/TabelaProdutos";
 import Loading from "../components/Loading";
 
 export function Admin() {
-  const { restaurant, loading } = useContext(RestaurantContext);
+  const { restaurant, loading } = useContext(AdminRestaurantContext);
 
   if (loading) {
     return <Loading />;
   }
 
-  console.log(restaurant);
   if (!restaurant) {
     return (
       <>
@@ -58,7 +56,6 @@ export function Admin() {
   return (
     <>
       <Header headerType="admin" />
-
       <Box
         sx={{
           margin: "1%",
@@ -93,20 +90,6 @@ export function Admin() {
             </Button>
           </Link>
         </Box>
-        {/* 
-        <Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginBottom: "100px",
-            }}
-          >
-            <CardAdmin />
-          </Box>
-        </Box>
-*/}
         <TabelaProdutos />
       </Box>
     </>

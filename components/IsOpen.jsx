@@ -132,7 +132,10 @@ const IsOpen = () => {
           {mensagem}
         </Typography>
       </Box>
-      <Link to="perfil-da-loja" style={{ color: "inherit" }}>
+      <Link
+        to={`/perfil-da-loja/${restaurant.nome}`}
+        style={{ color: "inherit" }}
+      >
         <Typography component="h1" align="left" sx={{ fontSize: "12px" }}>
           Ver perfil da loja
         </Typography>

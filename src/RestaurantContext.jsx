@@ -3,6 +3,8 @@ import {
   getFirestore,
   collection,
   getDocs,
+  query,
+  where,
   doc,
   updateDoc,
 } from "firebase/firestore";
@@ -19,25 +21,27 @@ const RestaurantProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const db = getFirestore();
 
-  useEffect(() => {
-    const fetchRestaurant = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "Restaurantes"));
-        if (!querySnapshot.empty) {
-          const restaurantDoc = querySnapshot.docs[0];
-          setRestaurant({ id: restaurantDoc.id, ...restaurantDoc.data() });
-        } else {
-          console.log("Nenhum documento encontrado!");
-        }
-      } catch (error) {
-        console.error("Erro ao buscar dados do restaurante:", error);
-      } finally {
-        setLoading(false);
+  const fetchRestaurantByName = async (name) => {
+    setLoading(true);
+    try {
+      const q = query(
+        collection(db, "Restaurantes"),
+        where("nome", "==", name)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const restaurantDoc = querySnapshot.docs[0];
+        setRestaurant({ id: restaurantDoc.id, ...restaurantDoc.data() });
+      } else {
+        console.log("Nenhum documento encontrado!");
+        setRestaurant(null);
       }
-    };
-
-    fetchRestaurant();
-  }, [db]);
+    } catch (error) {
+      console.error("Erro ao buscar dados do restaurante:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const updateRestaurant = async (updatedData) => {
     try {
@@ -51,7 +55,13 @@ const RestaurantProvider = ({ children }) => {
 
   return (
     <RestaurantContext.Provider
-      value={{ restaurant, setRestaurant, updateRestaurant, loading }}
+      value={{
+        restaurant,
+        setRestaurant,
+        updateRestaurant,
+        fetchRestaurantByName,
+        loading,
+      }}
     >
       {children}
     </RestaurantContext.Provider>

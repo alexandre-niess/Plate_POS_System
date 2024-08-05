@@ -1,8 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import App from "./App.jsx";
-import Home from "../screens/Home.jsx";
+import LandingPage from "../screens/LandingPage/LandingPage.jsx";
 import PerfilEmp from "../screens/PerfilEmp.jsx";
 import { CadPrato } from "../screens/CadPrato.jsx";
 import { Login } from "../screens/Login.jsx";
@@ -53,7 +52,7 @@ createRoot(document.getElementById("root")).render(
         <PratoProvider>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<LandingPage />} />
               <Route path=":restaurantName" element={<Restaurant />} />
               <Route
                 path="perfil-da-loja/:restaurantName"

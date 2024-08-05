@@ -1,5 +1,4 @@
 import { createTheme, ThemeProvider, Typography } from "@mui/material";
-import { Home } from "../screens/Home";
 import { Outlet } from "react-router-dom";
 
 function App() {

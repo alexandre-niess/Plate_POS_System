@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../../components/Header";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -17,14 +17,24 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import Step4 from "./Step4";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, addDoc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../src/firebaseConfig";
+import { AdminRestaurantContext } from "../../src/AdminRestaurantContext";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 export function CadRestaurante() {
   const [activeStep, setActiveStep] = useState(0);
@@ -39,7 +49,7 @@ export function CadRestaurante() {
     pagamentoDinheiro: false,
     pagamentoCartao: false,
     cartoes: "",
-    valorMinimo: "", // Adicionar valorMinimo aqui
+    valorMinimo: "",
     horarios: {
       segunda: {
         abertura: { hora: "", minuto: "" },
@@ -57,6 +67,8 @@ export function CadRestaurante() {
     imagem: null,
     imagemNome: "",
   });
+
+  const { setRestaurant } = useContext(AdminRestaurantContext);
 
   const steps = [
     "Dados do Restaurante",
@@ -118,11 +130,18 @@ export function CadRestaurante() {
         pagamentoDinheiro: formData.pagamentoDinheiro,
         pagamentoCartao: formData.pagamentoCartao,
         cartoes: formData.cartoes,
-        valorMinimo: formData.valorMinimo, // Incluir valorMinimo aqui
+        valorMinimo: formData.valorMinimo,
         horarios: horariosArray,
         categorias: formData.categorias,
         imagemURL: imagemURL,
+        adminId: auth.currentUser ? auth.currentUser.uid : null,
       };
+
+      console.log("Dados do Restaurante:", restauranteData);
+
+      if (!auth.currentUser) {
+        throw new Error("Usuário não autenticado");
+      }
 
       const docRef = await addDoc(
         collection(db, "Restaurantes"),
@@ -132,12 +151,21 @@ export function CadRestaurante() {
 
       if (docSnap.exists()) {
         console.log("Documento cadastrado:", docSnap.data());
+
+        await updateDoc(doc(db, "admins", auth.currentUser.uid), {
+          idRest: docRef.id,
+        });
+
+        setRestaurant({
+          id: docRef.id,
+          ...restauranteData,
+        });
+
+        alert("Restaurante cadastrado com sucesso!");
+        resetForm();
       } else {
         console.log("Nenhum documento encontrado.");
       }
-
-      alert("Restaurante cadastrado com sucesso!");
-      resetForm();
     } catch (error) {
       console.error("Erro ao cadastrar o restaurante: ", error);
       alert("Erro ao cadastrar o restaurante. Tente novamente.");
@@ -174,7 +202,7 @@ export function CadRestaurante() {
       pagamentoDinheiro: false,
       pagamentoCartao: false,
       cartoes: "",
-      valorMinimo: "", // Resetar valorMinimo aqui
+      valorMinimo: "",
       horarios: {
         segunda: {
           abertura: { hora: "", minuto: "" },

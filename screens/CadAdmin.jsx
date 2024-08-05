@@ -13,7 +13,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "../components/Header";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../src/firebaseConfig"; // Certifique-se de que este arquivo esteja corretamente configurado
 
@@ -48,10 +54,12 @@ export function CadAdmin() {
       );
       const user = userCredential.user;
 
-      await addDoc(collection(db, "admins"), {
+      // Criação do documento do admin no Firestore com setDoc
+      await setDoc(doc(db, "admins", user.uid), {
         uid: user.uid,
         name: name,
         email: email,
+        idRest: "", // Inicialmente vazio
       });
 
       setSuccess("Cadastro realizado com sucesso!");

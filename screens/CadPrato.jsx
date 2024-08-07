@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -23,16 +23,20 @@ import {
   addDoc,
   doc,
   getDoc,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Importa os métodos de autenticação
 import { firebaseConfig } from "../src/firebaseConfig";
-import { RestaurantContext } from "../src/RestaurantContext"; // Import the context
 import Loading from "../components/Loading";
 
-// Initialize Firebase
+// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 const db = getFirestore(app);
+const auth = getAuth(app); // Inicializa a autenticação
 
 const alergenicos = [
   "Açúcar",
@@ -44,7 +48,6 @@ const alergenicos = [
 ];
 
 export function CadPrato() {
-  const { restaurant, loading } = useContext(RestaurantContext); // Use the context
   const [selectedAlergenicos, setSelectedAlergenicos] = useState([]);
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
@@ -53,6 +56,9 @@ export function CadPrato() {
   const [imagem, setImagem] = useState(null);
   const [imagemNome, setImagemNome] = useState(""); // Para armazenar o nome do arquivo de imagem
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [restaurantId, setRestaurantId] = useState(null);
+  const [categorias, setCategorias] = useState([]);
 
   const [errors, setErrors] = useState({
     nome: false,
@@ -61,6 +67,54 @@ export function CadPrato() {
     preco: false,
     imagem: false,
   });
+
+  useEffect(() => {
+    const fetchAdminData = async (email) => {
+      try {
+        const q = query(collection(db, "admins"), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+        if (!querySnapshot.empty) {
+          const adminDoc = querySnapshot.docs[0];
+          const adminData = adminDoc.data();
+          setRestaurantId(adminData.idRest);
+          fetchRestaurantCategories(adminData.idRest); // Buscar categorias do restaurante
+        } else {
+          console.log("Nenhum documento encontrado para o admin!");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados do admin:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchRestaurantCategories = async (idRest) => {
+      try {
+        const docRef = doc(db, "Restaurantes", idRest);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const restaurantData = docSnap.data();
+          setCategorias(restaurantData.categorias || []);
+        } else {
+          console.log("Nenhum documento encontrado para o restaurante!");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar categorias do restaurante:", error);
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        fetchAdminData(user.email);
+      } else {
+        // No user is signed in
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleAlergenicosChange = (event) => {
     const value = event.target.name;
@@ -121,7 +175,7 @@ export function CadPrato() {
       // Converte os alergenicos selecionados para uma string separada por vírgulas
       const alergenicosString = selectedAlergenicos.join(",");
 
-      // Adiciona os dados do prato ao Firestore
+      // Adiciona os dados do prato ao Firestore, incluindo o ID do restaurante
       const docRef = await addDoc(collection(db, "Pratos"), {
         nome,
         descricao,
@@ -129,6 +183,7 @@ export function CadPrato() {
         preco,
         alergenicos: alergenicosString,
         imagemPrato: imagemURL,
+        restauranteId: restaurantId, // Adiciona o ID do restaurante
       });
 
       // Obtenha o documento recém-adicionado
@@ -229,11 +284,17 @@ export function CadPrato() {
               error={errors.categoria}
               helperText={errors.categoria ? "Categoria é obrigatória" : ""}
             >
-              {restaurant.categorias.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
+              {categorias.length > 0 ? (
+                categorias.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem value="">
+                  <em>Sem categorias disponíveis</em>
                 </MenuItem>
-              ))}
+              )}
             </TextField>
 
             <Typography component="h2" variant="h6" sx={{ mt: 2 }}>

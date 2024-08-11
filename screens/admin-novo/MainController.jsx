@@ -1,11 +1,19 @@
-// MainController.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import SidebarMenu from "./SidebarMenu";
 import Restaurante from "./screens/Restaurante";
 import { Box, Typography, Toolbar, Hidden } from "@mui/material";
+import Loading from "../../components/Loading";
+import { AdminRestaurantContext } from "../../src/AdminRestaurantContext";
+
+const drawerWidth = 250; // Definindo a largura do drawer
 
 const MainController = () => {
   const [activeScreen, setActiveScreen] = useState("Restaurante");
+  const { restaurant, loading } = useContext(AdminRestaurantContext);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const options = [
     "Restaurante",
@@ -19,7 +27,7 @@ const MainController = () => {
   const renderContent = () => {
     switch (activeScreen) {
       case "Restaurante":
-        return <Restaurante />;
+        return <Restaurante restaurant={restaurant} />;
       case "Cardápio":
         return <Typography variant="h4">Cardápio Screen</Typography>;
       case "Pedidos":
@@ -43,7 +51,7 @@ const MainController = () => {
         sx={{
           flexGrow: 1,
           p: { xs: 2, md: 3 },
-          ml: {}, // Ajuste a margem esquerda para o drawerWidth
+          ml: { md: 0 }, // Ajuste a margem esquerda para o drawerWidth
           mt: { xs: "64px", md: 0 }, // Ajuste o topo em modo mobile para desconsiderar o AppBar
         }}
       >

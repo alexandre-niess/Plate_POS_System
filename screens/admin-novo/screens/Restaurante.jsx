@@ -15,7 +15,8 @@ import {
   Checkbox,
 } from "@mui/material";
 
-const Restaurante = () => {
+const Restaurante = ({ restaurant }) => {
+  console.log(restaurant);
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleTabChange = (event, newValue) => {

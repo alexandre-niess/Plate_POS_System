@@ -16,11 +16,12 @@ import EditPrato from "../screens/EditPrato.jsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Restaurant from "../screens/Restaurant.jsx";
 import { AdminRestaurantProvider } from "./AdminRestaurantContext.jsx";
+import MainController from "../screens/admin-novo/MainController.jsx";
 
 const temaRest = createTheme({
   palette: {
     primary: {
-      main: "#2A3A44", // cor primaria
+      main: "#F05738", // cor primaria
     },
     background: {
       default: "#fff",
@@ -74,6 +75,14 @@ createRoot(document.getElementById("root")).render(
                 element={
                   <ProtectedRoute>
                     <Admin />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="adminnovo"
+                element={
+                  <ProtectedRoute>
+                    <MainController />
                   </ProtectedRoute>
                 }
               />

@@ -21,7 +21,7 @@ import MainController from "../screens/admin-novo/MainController.jsx";
 const temaRest = createTheme({
   palette: {
     primary: {
-      main: "#F05738", // cor primaria
+      main: "#223344", // cor primaria
     },
     background: {
       default: "#fff",

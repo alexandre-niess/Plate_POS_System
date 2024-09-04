@@ -52,7 +52,7 @@ const MainController = () => {
           flexGrow: 1,
           p: { xs: 2, md: 3 },
           ml: { md: 0 }, // Ajuste a margem esquerda para o drawerWidth
-          mt: { xs: "64px", md: 0 }, // Ajuste o topo em modo mobile para desconsiderar o AppBar
+          mt: { xs: "-50px", md: 0 }, // Ajuste o topo em modo mobile para desconsiderar o AppBar
         }}
       >
         <Hidden mdUp>

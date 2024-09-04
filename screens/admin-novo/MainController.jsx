@@ -16,12 +16,12 @@ const MainController = () => {
   }
 
   const options = [
-    "Restaurante",
-    "Cardápio",
-    "Pedidos",
-    "Fidelidade",
-    "Cupons",
-    "Atendimento",
+    { label: "Restaurante", icon: "IconOne" },
+    { label: "Cardápio", icon: "IconTwo" },
+    { label: "Pedidos", icon: "IconThree" },
+    { label: "Fidelidade", icon: "IconFour" },
+    { label: "Cupons", icon: "IconFive" },
+    { label: "Atendimento", icon: "IconSix" },
   ];
 
   const renderContent = () => {
@@ -45,14 +45,18 @@ const MainController = () => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <SidebarMenu options={options} onSelect={setActiveScreen} />
+      <SidebarMenu
+        options={options}
+        activeScreen={activeScreen}
+        onSelect={setActiveScreen}
+      />
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: { xs: 2, md: 3 },
-          ml: { md: 0 }, // Ajuste a margem esquerda para o drawerWidth
-          mt: { xs: "-50px", md: 0 }, // Ajuste o topo em modo mobile para desconsiderar o AppBar
+          ml: { md: 0 },
+          mt: { xs: "-50px", md: 0 },
         }}
       >
         <Hidden mdUp>

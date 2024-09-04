@@ -1,4 +1,3 @@
-// SidebarMenu.jsx
 import React, { useState } from "react";
 import {
   Drawer,
@@ -15,12 +14,15 @@ import {
   AppBar,
   Toolbar,
   Hidden,
+  useTheme, // Importando useTheme
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import icons from "../../components/Icons"; // Certifique-se de que o caminho esteja correto
 
-const drawerWidth = 250;
+const drawerWidth = 300;
 
-const SidebarMenu = ({ options, onSelect }) => {
+const SidebarMenu = ({ options, onSelect, activeScreen }) => {
+  const theme = useTheme(); // Usando useTheme para acessar as variáveis do tema
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -35,7 +37,7 @@ const SidebarMenu = ({ options, onSelect }) => {
           alignItems: "center",
           gap: 2,
           p: 2,
-          backgroundColor: "primary.main",
+          backgroundColor: theme.palette.primary.main, // Usando o tema
           color: "white",
         }}
       >
@@ -46,21 +48,42 @@ const SidebarMenu = ({ options, onSelect }) => {
         <Typography variant="h6">Admin</Typography>
       </Box>
       <List>
-        {options.map((option, index) => (
-          <React.Fragment key={index}>
-            <ListItem button onClick={() => onSelect(option)}>
-              <ListItemText primary={option} />
-              {["Pedidos", "Fidelidade", "Cupons", "Atendimento"].includes(
-                option
-              ) && (
-                <ListItemIcon>
-                  <Chip label="EM BREVE" />
+        {options.map((option, index) => {
+          const IconComponent = icons[option.icon]; // Recupera o ícone correspondente
+          const isActive = activeScreen === option.label;
+          const iconColor = isActive
+            ? theme.palette.primary.main // Cor ativa
+            : theme.palette.text.secondary; // Cor inativa (cinza)
+
+          return (
+            <React.Fragment key={index}>
+              <ListItem button onClick={() => onSelect(option.label)}>
+                <ListItemIcon sx={{ minWidth: "40px" }}>
+                  {" "}
+                  {/* Ajuste o valor conforme necessário */}
+                  <IconComponent color={iconColor} />{" "}
+                  {/* Ícone dinâmico com cor */}
                 </ListItemIcon>
-              )}
-            </ListItem>
-            {index < options.length - 1 && <Divider />}
-          </React.Fragment>
-        ))}
+                <ListItemText
+                  primary={option.label}
+                  sx={{
+                    color: isActive
+                      ? theme.palette.primary.main // Cor ativa
+                      : theme.palette.text.secondary, // Cor inativa
+                  }}
+                />
+                {["Pedidos", "Fidelidade", "Cupons", "Atendimento"].includes(
+                  option.label
+                ) && (
+                  <ListItemIcon>
+                    <Chip label="EM BREVE" />
+                  </ListItemIcon>
+                )}
+              </ListItem>
+              {index < options.length - 1 && <Divider />}
+            </React.Fragment>
+          );
+        })}
       </List>
     </div>
   );
@@ -82,6 +105,7 @@ const SidebarMenu = ({ options, onSelect }) => {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography variant="h6" noWrap>
               Restaurante Admin
             </Typography>
@@ -100,7 +124,7 @@ const SidebarMenu = ({ options, onSelect }) => {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             }}
             sx={{
               display: { xs: "block", md: "none" },

@@ -96,20 +96,35 @@ const Restaurante = () => {
           top: 0,
           width: "100%",
           zIndex: 10,
-          marginLeft: "-2px",
-          backgroundColor: "white",
-          paddingBottom: 2,
-          boxShadow: "0px 20px 20px -5px rgba(255, 255, 255, 1)", // Sombra inferior difusa
+          backgroundColor: "background.secondary",
+          boxShadow: (theme) =>
+            `0px 20px 20px -15px ${theme.palette.background.secondary}`, // Usa a cor do tema
         }}
       >
-        <Typography variant="h4" sx={{ marginTop: "30px" }}>
+        {/* Contêiner para o título, ocultado em telas pequenas */}
+        <Typography
+          variant="h4"
+          sx={{
+            marginTop: "30px",
+            display: { xs: "none", sm: "block" }, // Oculta em telas pequenas
+          }}
+        >
           Restaurante
         </Typography>
 
+        {/* Contêiner para as abas, com scroll horizontal em telas pequenas */}
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
           aria-label="restaurant tabs"
+          variant="scrollable" // Permite o scroll horizontal
+          scrollButtons="auto" // Mostra botões de scroll se necessário
+          sx={{
+            marginTop: { xs: "60px", sm: "0px" }, // Ajusta o espaçamento entre o título e as abas
+            borderBottom: 1,
+            borderColor: "divider", // Define a linha inferior
+            overflowX: "auto", // Adiciona scroll horizontal
+          }}
         >
           <Tab label="Dados Gerais" />
           <Tab label="Horários de Funcionamento" />

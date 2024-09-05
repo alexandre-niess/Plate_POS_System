@@ -61,7 +61,31 @@ export function CadRestaurante() {
         fechamento: { hora: "", minuto: "" },
         status: "aberto",
       },
-      // ...restantes dos dias
+      quarta: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      quinta: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      sexta: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      sabado: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
+      domingo: {
+        abertura: { hora: "", minuto: "" },
+        fechamento: { hora: "", minuto: "" },
+        status: "aberto",
+      },
     },
     categorias: [],
     imagem: null,

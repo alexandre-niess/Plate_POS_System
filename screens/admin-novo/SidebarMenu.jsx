@@ -31,60 +31,73 @@ const SidebarMenu = ({ options, onSelect, activeScreen }) => {
 
   const drawer = (
     <div>
+      {/* Apenas exibe a parte do Avatar e o texto Admin em telas médias e maiores */}
+      <Hidden mdDown>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            p: 2,
+            backgroundColor: theme.palette.primary.main, // Usando o tema
+            color: "white",
+          }}
+        >
+          <Avatar
+            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            alt="Logo"
+          />
+          <Typography variant="h6">Admin</Typography>
+        </Box>
+      </Hidden>
+
+      {/* Adicionando marginTop em telas pequenas para compensar o AppBar */}
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
-          p: 2,
-          backgroundColor: theme.palette.primary.main, // Usando o tema
-          color: "white",
+          mt: { xs: 8, sm: 0 }, // Adiciona margem superior em telas pequenas (xs)
         }}
       >
-        <Avatar
-          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-          alt="Logo"
-        />
-        <Typography variant="h6">Admin</Typography>
-      </Box>
-      <List>
-        {options.map((option, index) => {
-          const IconComponent = icons[option.icon]; // Recupera o ícone correspondente
-          const isActive = activeScreen === option.label;
-          const iconColor = isActive
-            ? theme.palette.primary.main // Cor ativa
-            : theme.palette.text.secondary; // Cor inativa (cinza)
+        <List>
+          {options.map((option, index) => {
+            const IconComponent = icons[option.icon]; // Recupera o ícone correspondente
+            const isActive = activeScreen === option.label;
+            const iconColor = isActive
+              ? theme.palette.primary.main // Cor ativa
+              : theme.palette.text.secondary; // Cor inativa (cinza)
 
-          return (
-            <React.Fragment key={index}>
-              <ListItem button onClick={() => onSelect(option.label)}>
-                <ListItemIcon sx={{ minWidth: "40px" }}>
-                  {" "}
-                  {/* Ajuste o valor conforme necessário */}
-                  <IconComponent color={iconColor} />{" "}
-                  {/* Ícone dinâmico com cor */}
-                </ListItemIcon>
-                <ListItemText
-                  primary={option.label}
-                  sx={{
-                    color: isActive
-                      ? theme.palette.primary.main // Cor ativa
-                      : theme.palette.text.secondary, // Cor inativa
-                  }}
-                />
-                {["Pedidos", "Fidelidade", "Cupons", "Atendimento"].includes(
-                  option.label
-                ) && (
-                  <ListItemIcon>
-                    <Chip label="EM BREVE" />
+            return (
+              <React.Fragment key={index}>
+                <ListItem button onClick={() => onSelect(option.label)}>
+                  <ListItemIcon sx={{ minWidth: "40px" }}>
+                    <IconComponent color={iconColor} />{" "}
+                    {/* Ícone dinâmico com cor */}
                   </ListItemIcon>
-                )}
-              </ListItem>
-              {index < options.length - 1 && <Divider />}
-            </React.Fragment>
-          );
-        })}
-      </List>
+                  <ListItemText
+                    primary={option.label}
+                    sx={{
+                      color: isActive
+                        ? theme.palette.primary.main // Cor ativa
+                        : theme.palette.text.secondary, // Cor inativa
+                    }}
+                  />
+                  {["Pedidos", "Fidelidade", "Cupons", "Atendimento"].includes(
+                    option.label
+                  ) && (
+                    <ListItemIcon>
+                      <Chip
+                        label="EM BREVE"
+                        variant="outlined"
+                        sx={{ color: "grey" }}
+                      />
+                    </ListItemIcon>
+                  )}
+                </ListItem>
+                {index < options.length - 1 && <Divider />}
+              </React.Fragment>
+            );
+          })}
+        </List>
+      </Box>
     </div>
   );
 
@@ -106,12 +119,21 @@ const SidebarMenu = ({ options, onSelect, activeScreen }) => {
               <MenuIcon />
             </IconButton>
 
+            {/* Aqui alteramos o que aparece em telas pequenas */}
             <Typography variant="h6" noWrap>
-              Restaurante Admin
+              <Hidden smDown>
+                {/* Título padrão para telas maiores */}
+                Restaurante Admin
+              </Hidden>
+              <Hidden smUp>
+                {/* Nome da sessão ativa em telas pequenas */}
+                {activeScreen}
+              </Hidden>
             </Typography>
           </Toolbar>
         </AppBar>
       </Hidden>
+
       <Box
         component="nav"
         sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}

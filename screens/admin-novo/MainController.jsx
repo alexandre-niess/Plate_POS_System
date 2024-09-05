@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import SidebarMenu from "./SidebarMenu";
 import Restaurante from "./screens/Restaurante";
-import { Box, Typography, Toolbar, Hidden } from "@mui/material";
+import Cardapio from "./screens/Cardapio";
+import { Box, Typography, Toolbar, Hidden, CssBaseline } from "@mui/material";
 import Loading from "../../components/Loading";
 import { AdminRestaurantContext } from "../../src/AdminRestaurantContext";
-
-const drawerWidth = 250; // Definindo a largura do drawer
 
 const MainController = () => {
   const [activeScreen, setActiveScreen] = useState("Restaurante");
@@ -16,10 +15,10 @@ const MainController = () => {
   }
 
   const options = [
-    { label: "Restaurante", icon: "IconOne" },
+    { label: "Restaurante", icon: "IconThree" },
     { label: "Cardápio", icon: "IconTwo" },
-    { label: "Pedidos", icon: "IconThree" },
-    { label: "Fidelidade", icon: "IconFour" },
+    { label: "Pedidos", icon: "IconFour" },
+    { label: "Fidelidade", icon: "IconOne" },
     { label: "Cupons", icon: "IconFive" },
     { label: "Atendimento", icon: "IconSix" },
   ];
@@ -29,7 +28,7 @@ const MainController = () => {
       case "Restaurante":
         return <Restaurante restaurant={restaurant} />;
       case "Cardápio":
-        return <Typography variant="h4">Cardápio Screen</Typography>;
+        return <Cardapio restaurant={restaurant} />;
       case "Pedidos":
         return <Typography variant="h4">Pedidos Screen</Typography>;
       case "Fidelidade":
@@ -44,27 +43,30 @@ const MainController = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <SidebarMenu
-        options={options}
-        activeScreen={activeScreen}
-        onSelect={setActiveScreen}
-      />
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: { xs: 2, md: 3 },
-          ml: { md: 0 },
-          mt: { xs: "-50px", md: 0 },
-        }}
-      >
-        <Hidden mdUp>
-          <Toolbar />
-        </Hidden>
-        {renderContent()}
+    <>
+      <CssBaseline />
+      <Box sx={{ display: "flex", backgroundColor: "background.secondary" }}>
+        <SidebarMenu
+          options={options}
+          activeScreen={activeScreen}
+          onSelect={setActiveScreen}
+        />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: { xs: 2, md: 3 },
+            ml: { md: 0 },
+            mt: { xs: "-50px", md: 0 },
+          }}
+        >
+          <Hidden mdUp>
+            <Toolbar />
+          </Hidden>
+          {renderContent()}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

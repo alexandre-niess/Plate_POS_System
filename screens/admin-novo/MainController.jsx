@@ -5,6 +5,7 @@ import Cardapio from "./screens/Cardapio";
 import { Box, Typography, Toolbar, Hidden, CssBaseline } from "@mui/material";
 import Loading from "../../components/Loading";
 import { AdminRestaurantContext } from "../../src/AdminRestaurantContext";
+import Construction from "./screens/Construction";
 
 const MainController = () => {
   const [activeScreen, setActiveScreen] = useState("Restaurante");
@@ -30,15 +31,15 @@ const MainController = () => {
       case "Cardápio":
         return <Cardapio restaurant={restaurant} />;
       case "Pedidos":
-        return <Typography variant="h4">Pedidos Screen</Typography>;
+        return <Construction />;
       case "Fidelidade":
-        return <Typography variant="h4">Fidelidade Screen</Typography>;
+        return <Construction />;
       case "Cupons":
-        return <Typography variant="h4">Cupons Screen</Typography>;
+        return <Construction />;
       case "Atendimento":
-        return <Typography variant="h4">Atendimento Screen</Typography>;
+        return <Construction />;
       default:
-        return <Typography variant="h4">Restaurante Screen</Typography>;
+        return <Construction />;
     }
   };
 

@@ -1,100 +1,54 @@
-import React, { useContext } from "react";
+import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Grid from "@mui/material/Grid";
-import { RestaurantContext } from "../src/RestaurantContext"; // Ajuste o caminho conforme necessário
-import Loading from "./Loading";
 
-const CardAdmin = () => {
-  const { restaurant, loading } = useContext(RestaurantContext);
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (!restaurant) {
-    return <div>Restaurante não encontrado.</div>;
-  }
-
-  const cardData = [
-    {
-      id: 1,
-      title: "Categorias Cadastradas",
-      data: restaurant.categorias || [],
-    },
-    {
-      id: 2,
-      title: "Formas de Pagamento",
-      data: [
-        ...(restaurant.pagamentoDinheiro ? ["Dinheiro"] : []),
-        ...(restaurant.pagamentoCartao ? [restaurant.cartoes] : []),
-      ],
-    },
-    {
-      id: 3,
-      title: "Horários de Atendimento",
-      data: restaurant.horarios || [],
-    },
-    {
-      id: 4,
-      title: "Endereço",
-      data: [
-        `${restaurant.logradouro}, ${restaurant.numero} - ${restaurant.bairro}, ${restaurant.cidade} - ${restaurant.estado}, ${restaurant.cep}`,
-      ],
-    },
-  ];
-
+function CardAdmin({ nome, preco, imagemPrato }) {
   return (
-    <Grid container spacing={2} justifyContent="center">
-      {cardData.map((card) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} key={card.id}>
-          <Card
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 2,
-              backgroundColor: "background.secondary",
-              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-              borderRadius: "8px",
-              textAlign: "center",
-              height: "100%",
-              border: "1px solid #e0e0e0",
-            }}
-          >
-            <CardContent
-              sx={{
-                flexGrow: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                component="h1"
-                sx={{ fontSize: "18px", fontWeight: "600", marginBottom: 2 }}
-              >
-                {card.title}
-              </Typography>
-              {card.data.map((item, index) => (
-                <Typography
-                  key={index}
-                  component="p"
-                  sx={{ fontSize: "14px", marginBottom: 1 }}
-                >
-                  {item}
-                </Typography>
-              ))}
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+    <Card
+      sx={{
+        padding: 1,
+        backgroundColor: "background.secondary",
+        width: "100%",
+        height: "100px",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: "5px",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
+        <Typography component="h1" sx={{ fontSize: "14px" }}>
+          {nome}
+        </Typography>
+        <Typography component="h1" sx={{ fontSize: "16px" }}>
+          R${preco}
+        </Typography>
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src={imagemPrato}
+          alt="Imagem do prato"
+          style={{ width: "120px", height: "70px", borderRadius: "8px" }}
+        />
+      </Box>
+    </Card>
   );
-};
+}
 
 export default CardAdmin;

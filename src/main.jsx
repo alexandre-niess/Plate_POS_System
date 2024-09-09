@@ -8,10 +8,8 @@ import { Login } from "../screens/Login.jsx";
 import { CadAdmin } from "../screens/CadAdmin.jsx";
 import ProtectedRoute from "./ProtectedRoute";
 import CadRestaurante from "../screens/CadRestaurante/CadRestaurante.jsx";
-import Admin from "../screens/Admin.jsx";
 import { RestaurantProvider } from "./RestaurantContext.jsx"; // Importe o provider
 import { PratoProvider } from "./PratoContext.jsx";
-import EditRestaurante from "../screens/EditRestaurante/EditRestaurante.jsx";
 import EditPrato from "../screens/EditPrato.jsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Restaurant from "../screens/Restaurant.jsx";
@@ -70,14 +68,7 @@ createRoot(document.getElementById("root")).render(
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="admin"
-                element={
-                  <ProtectedRoute>
-                    <Admin />
-                  </ProtectedRoute>
-                }
-              />
+
               <Route
                 path="adminnovo"
                 element={
@@ -86,14 +77,7 @@ createRoot(document.getElementById("root")).render(
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="editar-restaurante"
-                element={
-                  <ProtectedRoute>
-                    <EditRestaurante />
-                  </ProtectedRoute>
-                }
-              />
+
               <Route
                 path="cad-prato"
                 element={

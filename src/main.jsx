@@ -37,10 +37,19 @@ const temaRest = createTheme({
     },
   },
   shape: {
-    borderRadius: 5,
+    borderRadius: 5, // border radius padrão para outros componentes
   },
   typography: {
     fontFamily: "Lexend, sans-serif",
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 40, // define um border radius maior especificamente para botões
+        },
+      },
+    },
   },
 });
 

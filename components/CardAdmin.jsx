@@ -8,7 +8,7 @@ function CardAdmin({ nome, preco, imagemPrato }) {
     <Card
       sx={{
         padding: 1,
-        backgroundColor: "background.secondary",
+        backgroundColor: "#fff",
         width: "100%",
         height: "100px",
         display: "flex",
